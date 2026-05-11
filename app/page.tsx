@@ -15,7 +15,7 @@ import {
   ArrowLeft,
   Clock,
   Filter,
-  Info,
+  AlertCircle,
   Calendar,
 } from "lucide-react"
 
@@ -28,60 +28,23 @@ const MOCK_INSTITUTES = [
 ]
 
 const MOCK_GROUPS = [
-  {
-    id: "IFIFB-2",
-    name: "IFIFB-2 - Informaatika",
-    instId: "SDT",
-    direction: "TA",
-  },
-  {
-    id: "IFIFB-1",
-    name: "IFIFB-1 - Informaatika",
-    instId: "SDT",
-    direction: "TA",
-  },
+  { id: "IFIFB-2", name: "IFIFB-2 - Informaatika", instId: "SDT" },
+  { id: "IFIFB-1", name: "IFIFB-1 - Informaatika", instId: "SDT" },
   {
     id: "IFFIM-1",
     name: "IFFIM-1 - Inimese ja arvuti interaktsioon",
     instId: "SDT",
-    direction: "TA",
   },
-  {
-    id: "KOKOB-3",
-    name: "KOKOB-3 - Ristmeedia",
-    instId: "BFM",
-    direction: "DM",
-  },
-  {
-    id: "RIAGM-1",
-    name: "RIAGM-1 - Riigiteadused",
-    instId: "SOG",
-    direction: "DM",
-  },
-  {
-    id: "KAKOB-1",
-    name: "KAKOB-1 - Kasvatusteadused",
-    instId: "SEH",
-    direction: "DM",
-  },
+  { id: "KOKOB-3", name: "KOKOB-3 - Ristmeedia", instId: "BFM" },
+  { id: "RIAGM-1", name: "RIAGM-1 - Riigiteadused", instId: "SOG" },
+  { id: "KAKOB-1", name: "KAKOB-1 - Kasvatusteadused", instId: "SEH" },
   {
     id: "HILAB_jpn-1",
     name: "Aasia uuringud (Jaapani uuringud) 1. õ.-a.",
     instId: "BFM",
-    direction: "DM",
   }, // Added
-  {
-    id: "KAANB-1",
-    name: "Andragoogika 1. õ.-a.",
-    instId: "SEH",
-    direction: "DM",
-  }, // Added
-  {
-    id: "KOAB-1",
-    name: "Ajakirjandus 1.õ.-a.",
-    instId: "BFM",
-    direction: "DM",
-  }, // Added
+  { id: "KAANB-1", name: "Andragoogika 1. õ.-a.", instId: "SEH" }, // Added
+  { id: "KOAB-1", name: "Ajakirjandus 1.õ.-a.", instId: "BFM" }, // Added
 ]
 
 const MOCK_TIMETABLES: Record<string, any[]> = {
@@ -94,7 +57,7 @@ const MOCK_TIMETABLES: Record<string, any[]> = {
       title: "IFI6071.DT Tarkvaratehnika",
       type: "Loeng",
       room: "A-402",
-      lecturer: "Mart Laur",
+      lecturer: "M. K.",
       color: "bg-blue-50 border border-blue-200 text-blue-900",
     },
     {
@@ -105,7 +68,7 @@ const MOCK_TIMETABLES: Record<string, any[]> = {
       title: "IFI6071.DT Tarkvaratehnika",
       type: "Praktikum",
       room: "A-402",
-      lecturer: "Mart Laur",
+      lecturer: "M. K.",
       color: "bg-emerald-50 border border-emerald-200 text-emerald-900",
     },
     {
@@ -116,7 +79,7 @@ const MOCK_TIMETABLES: Record<string, any[]> = {
       title: "IFI6066.DT Andmebaasid II",
       type: "Praktikum",
       room: "A-400",
-      lecturer: "Ingrid Kool",
+      lecturer: "I. K.",
       color: "bg-emerald-50 border border-emerald-200 text-emerald-900",
     },
     {
@@ -127,7 +90,7 @@ const MOCK_TIMETABLES: Record<string, any[]> = {
       title: "IFI6067.DT Kasutajaliidese esteetika",
       type: "Loeng",
       room: "A-325",
-      lecturer: "David Murphy",
+      lecturer: "D. M.",
       color: "bg-purple-50 border border-purple-200 text-purple-900",
     },
     {
@@ -138,7 +101,7 @@ const MOCK_TIMETABLES: Record<string, any[]> = {
       title: "IFI6067.DT Kasutajaliidese esteetika",
       type: "Seminar",
       room: "A-325",
-      lecturer: "David Murphy",
+      lecturer: "D. M.",
       color: "bg-orange-50 border border-orange-200 text-orange-900",
     },
     {
@@ -149,7 +112,7 @@ const MOCK_TIMETABLES: Record<string, any[]> = {
       title: "Vabaaine",
       type: "Seminar",
       room: "M-218",
-      lecturer: "Taavi Leet",
+      lecturer: "T. L.",
       color: "bg-orange-50 border border-orange-200 text-orange-900",
     },
     {
@@ -160,7 +123,7 @@ const MOCK_TIMETABLES: Record<string, any[]> = {
       title: "IFI6069.DT Veebiprogrammeerimine",
       type: "Loeng",
       room: "S-244",
-      lecturer: "Asta Paas",
+      lecturer: "A. P.",
       color: "bg-blue-50 border border-blue-200 text-blue-900",
     },
     {
@@ -171,7 +134,7 @@ const MOCK_TIMETABLES: Record<string, any[]> = {
       title: "IFI6069.DT Veebiprogrammeerimine",
       type: "Praktikum",
       room: "S-244",
-      lecturer: "Asta Paas",
+      lecturer: "A. P.",
       color: "bg-emerald-50 border border-emerald-200 text-emerald-900",
     },
   ],
@@ -379,7 +342,7 @@ const WEEK_DAYS = [
   { id: "Fri", name: "Friday", date: "27.03" },
 ]
 
-type ViewMode = "HOME" | "BROWSE" | "TIMETABLE" | "GUIDE"
+type ViewMode = "HOME" | "BROWSE" | "TIMETABLE"
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -415,7 +378,6 @@ const App = () => {
   const [selectedLecturer, setSelectedLecturer] = useState<any>(null)
   const [selectedRoom, setSelectedRoom] = useState<any>(null)
   const [searchQuery, setSearchQuery] = useState("")
-  const [currentPage, setCurrentPage] = useState(1)
   const [language, setLanguage] = useState<"EST" | "ENG">("EST")
   const [notification, setNotification] = useState<string | null>(null)
 
@@ -474,7 +436,6 @@ const App = () => {
 
   const goToBrowse = (catId: string) => {
     setBrowseCategory(catId)
-    setCurrentPage(1)
     setView("BROWSE")
   }
 
@@ -501,32 +462,12 @@ const App = () => {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const query = searchQuery.trim().toLowerCase()
-    if (!query) {
-      showNotification("Type a group code or course name to search.")
-      return
-    }
-
-    const exactMatch = MOCK_GROUPS.find((g) => g.id.toLowerCase() === query)
-    if (exactMatch) {
-      goToTimetable(exactMatch)
-      return
-    }
-
-    const partialMatches = MOCK_GROUPS.filter(
-      (g) =>
-        g.id.toLowerCase().includes(query) ||
-        g.name.toLowerCase().includes(query) ||
-        g.instId.toLowerCase().includes(query)
+    const foundGroup = MOCK_GROUPS.find(
+      (g) => g.id.toLowerCase() === searchQuery.trim().toLowerCase()
     )
-
-    if (partialMatches.length === 1) {
-      goToTimetable(partialMatches[0])
-    } else if (partialMatches.length > 1) {
-      showNotification(
-        "Multiple matches found. Choose one from the suggestions below."
-      )
-    } else {
+    if (foundGroup) {
+      goToTimetable(foundGroup)
+    } else if (searchQuery.trim().length > 0) {
       showNotification(`No group found for "${searchQuery}"`)
     }
   }
@@ -544,14 +485,11 @@ const App = () => {
   }
 
   const handleExportICal = () => {
-    showNotification(
-      "Generating iCal file for Android and iOS. Download will start shortly."
-    )
+    showNotification("Generating iCal file... Download will start shortly.")
   }
 
   const handleInstructions = () => {
-    setView("GUIDE")
-    setIsMenuOpen(false)
+    showNotification("Opening instructions PDF...")
   }
 
   const toggleLanguage = () => {
@@ -587,6 +525,37 @@ const App = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full rounded-xl border border-slate-200 bg-slate-50 py-4 pr-4 pl-12 text-lg transition-all outline-none focus:border-red-600 focus:ring-2 focus:ring-red-100"
             />
+
+            {searchQuery.trim().length > 0 && (
+              <div className="absolute z-20 mt-2 w-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
+                {searchResults.length > 0 ? (
+                  searchResults.map((result) => (
+                    <button
+                      key={`${result.type}-${result.id}`}
+                      type="button"
+                      onClick={() => executeSearchResult(result)}
+                      className="w-full border-b border-slate-100 px-4 py-3 text-left transition-colors last:border-b-0 hover:bg-slate-50"
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="font-semibold text-slate-900">
+                          {result.label}
+                        </span>
+                        <span className="rounded-full bg-slate-100 px-2 py-1 text-[10px] font-bold tracking-wider text-slate-500 uppercase">
+                          {result.type}
+                        </span>
+                      </div>
+                      <div className="mt-1 text-xs text-slate-500">
+                        {result.subtitle}
+                      </div>
+                    </button>
+                  ))
+                ) : (
+                  <div className="px-4 py-3 text-sm text-slate-500">
+                    No suggestions found.
+                  </div>
+                )}
+              </div>
+            )}
           </form>
 
           <div className="mt-4 space-y-3">
@@ -661,7 +630,7 @@ const App = () => {
       {/* Security Alert Banner */}
       <div className="flex items-center gap-3 rounded-xl border border-blue-100 bg-blue-50 p-4 text-sm text-blue-700">
         <div className="rounded-full bg-blue-200 p-1.5">
-          <Info className="h-4 w-4" />
+          <AlertCircle className="h-4 w-4" />
         </div>
         <span>
           Connection is secure. All timetable data is encrypted via SSL.
@@ -677,33 +646,6 @@ const App = () => {
       rooms: "Check Rooms",
       curricula: "Curricula / Courses",
     }
-
-    const pageSize = 4
-    const availableGroups = MOCK_GROUPS.filter(
-      (g) => g.instId === selectedInstitute
-    )
-    const availableLecturers = MOCK_LECTURERS.filter(
-      (l) => l.instId === selectedInstitute
-    )
-    const availableRooms = MOCK_ROOMS
-    const totalItems =
-      browseCategory === "groups"
-        ? availableGroups.length
-        : browseCategory === "teachers"
-          ? availableLecturers.length
-          : availableRooms.length
-    const totalPages = Math.max(1, Math.ceil(totalItems / pageSize))
-    const startIndex = (currentPage - 1) * pageSize
-
-    const visibleGroups = availableGroups.slice(
-      startIndex,
-      startIndex + pageSize
-    )
-    const visibleLecturers = availableLecturers.slice(
-      startIndex,
-      startIndex + pageSize
-    )
-    const visibleRooms = availableRooms.slice(startIndex, startIndex + pageSize)
 
     return (
       <div className="animate-in space-y-6 duration-500 fade-in slide-in-from-right-8">
@@ -738,10 +680,7 @@ const App = () => {
                 {MOCK_INSTITUTES.map((inst) => (
                   <li key={inst.id}>
                     <button
-                      onClick={() => {
-                        setSelectedInstitute(inst.id)
-                        setCurrentPage(1)
-                      }}
+                      onClick={() => setSelectedInstitute(inst.id)}
                       className={`w-full border-l-4 px-6 py-3 text-left text-sm font-medium transition-colors ${
                         selectedInstitute === inst.id
                           ? "border-red-700 bg-red-50 text-red-700"
@@ -767,28 +706,27 @@ const App = () => {
 
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 {browseCategory === "groups" &&
-                  visibleGroups.map((group) => (
-                    <button
-                      key={group.id}
-                      onClick={() => goToTimetable(group)}
-                      className="group/btn rounded-xl border border-slate-200 bg-white p-4 text-left transition-all hover:border-red-300 hover:shadow-md"
-                    >
-                      <div className="mb-2 flex items-center justify-between gap-2">
+                  MOCK_GROUPS.filter((g) => g.instId === selectedInstitute).map(
+                    (group) => (
+                      <button
+                        key={group.id}
+                        onClick={() => goToTimetable(group)}
+                        className="group/btn rounded-xl border border-slate-200 bg-white p-4 text-left transition-all hover:border-red-300 hover:shadow-md"
+                      >
                         <div className="font-bold text-slate-900 transition-colors group-hover/btn:text-red-700">
                           {group.id}
                         </div>
-                        <span className="rounded-full bg-slate-100 px-2 py-1 text-[10px] tracking-[0.2em] text-slate-600 uppercase">
-                          {group.direction}
-                        </span>
-                      </div>
-                      <div className="mt-1 text-sm text-slate-500">
-                        {group.name}
-                      </div>
-                    </button>
-                  ))}
+                        <div className="mt-1 line-clamp-1 text-sm text-slate-500">
+                          {group.name}
+                        </div>
+                      </button>
+                    )
+                  )}
 
                 {browseCategory === "teachers" &&
-                  visibleLecturers.map((lecturer) => (
+                  MOCK_LECTURERS.filter(
+                    (l) => l.instId === selectedInstitute
+                  ).map((lecturer) => (
                     <button
                       key={lecturer.id}
                       onClick={() => goToLecturerSchedule(lecturer)}
@@ -804,7 +742,7 @@ const App = () => {
                   ))}
 
                 {browseCategory === "rooms" &&
-                  visibleRooms.map((room) => (
+                  MOCK_ROOMS.map((room) => (
                     <button
                       key={room.id}
                       onClick={() => goToRoomAvailability(room)}
@@ -820,39 +758,14 @@ const App = () => {
                   ))}
 
                 {browseCategory === "groups" &&
-                  availableGroups.length === 0 && (
+                  MOCK_GROUPS.filter((g) => g.instId === selectedInstitute)
+                    .length === 0 && (
                     <div className="col-span-full py-10 text-center text-slate-400">
                       <Users className="mx-auto mb-3 h-10 w-10 opacity-20" />
                       <p>No groups found for this institute.</p>
                     </div>
                   )}
               </div>
-
-              {totalPages > 1 && (
-                <div className="mt-6 flex items-center justify-between gap-3 text-sm">
-                  <button
-                    onClick={() =>
-                      setCurrentPage((prev) => Math.max(1, prev - 1))
-                    }
-                    disabled={currentPage === 1}
-                    className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-700 hover:bg-slate-50 disabled:opacity-50"
-                  >
-                    Previous
-                  </button>
-                  <span className="text-slate-500">
-                    Page {currentPage} of {totalPages}
-                  </span>
-                  <button
-                    onClick={() =>
-                      setCurrentPage((prev) => Math.min(totalPages, prev + 1))
-                    }
-                    disabled={currentPage === totalPages}
-                    className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-700 hover:bg-slate-50 disabled:opacity-50"
-                  >
-                    Next
-                  </button>
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -860,61 +773,15 @@ const App = () => {
     )
   }
 
-  const renderGuideContent = () => (
-    <div className="animate-in space-y-6 duration-500 fade-in slide-in-from-bottom-4">
-      <button
-        onClick={goHome}
-        className="group flex items-center gap-2 text-sm font-medium text-slate-500 transition-colors hover:text-red-700"
-      >
-        <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-        Back to Home
-      </button>
-
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h2 className="mb-3 text-2xl font-bold">
-          How to use the timetable system
-        </h2>
-        <p className="mb-4 text-slate-500">
-          This guide helps you find schedules faster, compare study tracks, and
-          export your timetable to calendars.
-        </p>
-        <ol className="list-inside list-decimal space-y-4 text-slate-700">
-          <li>
-            <strong>Search with keywords:</strong> start typing a group code,
-            course name or institute and choose from suggestions.
-          </li>
-          <li>
-            <strong>Browse by category:</strong> use the cards on the home page
-            to open study groups, lecturer schedules, or room availability.
-          </li>
-          <li>
-            <strong>Track labels:</strong> groups now include explicit direction
-            badges like <span className="font-semibold">TA</span> and{" "}
-            <span className="font-semibold">DM</span> so you can see which
-            module is for which student track.
-          </li>
-          <li>
-            <strong>Calendar export:</strong> use the export button to generate
-            an iCal file compatible with Android and iOS calendars.
-          </li>
-          <li>
-            <strong>Need more help?</strong> open the menu on mobile or contact
-            support from the footer.
-          </li>
-        </ol>
-      </div>
-    </div>
-  )
-
   const renderTimetableContent = () => (
     <div className="animate-in space-y-6 duration-500 fade-in slide-in-from-bottom-4">
       <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <button
-          onClick={goHome}
+          onClick={() => setView("BROWSE")}
           className="group flex items-center gap-2 text-sm font-medium text-slate-500 transition-colors hover:text-red-700"
         >
           <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-          Back to Home
+          Back to Browse
         </button>
         <div className="flex gap-2">
           <button
@@ -967,6 +834,11 @@ const App = () => {
                   : "Unknown"}{" "}
             • Spring Semester 2026
           </p>
+          {selectedGroup && (
+            <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-red-100 bg-red-50 px-3 py-1 text-xs font-bold tracking-wider text-red-700 uppercase">
+              Majority: {selectedGroup.majority}
+            </div>
+          )}
         </div>
 
         <div className="hidden md:block">
@@ -1168,6 +1040,36 @@ const App = () => {
               {isMenuOpen ? <X /> : <Menu />}
             </button>
           </div>
+
+          {isMenuOpen && (
+            <div className="space-y-2 border-t border-slate-200 py-3 md:hidden">
+              <button
+                onClick={goHome}
+                className="block w-full px-2 py-2 text-left text-sm font-medium text-slate-700 hover:text-red-700"
+              >
+                Home
+              </button>
+              <button
+                onClick={goToGuide}
+                className="block w-full px-2 py-2 text-left text-sm font-medium text-slate-700 hover:text-red-700"
+              >
+                Instructions
+              </button>
+              <button
+                onClick={toggleLanguage}
+                className="flex w-full items-center gap-2 px-2 py-2 text-left text-sm font-medium text-slate-700 hover:text-red-700"
+              >
+                <Globe className="h-4 w-4" />
+                Language: {language}
+              </button>
+              <button
+                onClick={() => showNotification("User profile coming soon!")}
+                className="block w-full px-2 py-2 text-left text-sm font-medium text-slate-700 hover:text-red-700"
+              >
+                Profile
+              </button>
+            </div>
+          )}
         </div>
       </nav>
 
@@ -1231,7 +1133,6 @@ const App = () => {
             {view === "HOME" && renderHomeContent()}
             {view === "BROWSE" && renderBrowseContent()}
             {view === "TIMETABLE" && renderTimetableContent()}
-            {view === "GUIDE" && renderGuideContent()}
           </div>
 
           {/* Right Column: Persistent Sidebar */}
@@ -1279,7 +1180,7 @@ const App = () => {
               </div>
 
               <div className="mb-3 grid grid-cols-7 gap-1 text-center text-xs font-semibold tracking-wider uppercase">
-                {["E", "T", "K", "N", "R", "L", "P"].map((d, i) => (
+                {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
                   <div key={i} className="text-slate-400">
                     {d}
                   </div>
@@ -1468,7 +1369,7 @@ const App = () => {
       {/* --- Notification Toast --- */}
       {notification && (
         <div className="fixed bottom-8 left-1/2 z-[100] flex -translate-x-1/2 animate-in items-center gap-3 rounded-xl border border-slate-700 bg-slate-900 px-6 py-3 text-white shadow-2xl duration-300 fade-in slide-in-from-bottom-4">
-          <Info className="h-5 w-5 text-slate-200" />
+          <AlertCircle className="h-5 w-5 text-red-500" />
           <span className="font-medium">{notification}</span>
         </div>
       )}
