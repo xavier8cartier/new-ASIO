@@ -10,12 +10,12 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
-  Globe,
   Users,
   ArrowLeft,
   Clock,
   Filter,
   AlertCircle,
+  Info,
   Calendar,
 } from "lucide-react"
 
@@ -97,8 +97,8 @@ const MOCK_GROUPS = [
     name: "Aasia uuringud (Jaapani uuringud) 1. õ.-a.",
     instId: "BFM",
   }, // Added
-  { id: "KAANB-1", name: "Andragoogika 1. õ.-a.", instId: "SEH" }, // Added
-  { id: "KOAB-1", name: "Ajakirjandus 1.õ.-a.", instId: "BFM" }, // Added
+  { id: "KAANB-1", name: "Andragoogika 1. õ.-a.", instId: "SEH" },
+  { id: "KOAB-1", name: "Ajakirjandus 1.õ.-a.", instId: "BFM" },
 ]
 
 const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
@@ -108,10 +108,10 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       day: "Mon",
       start: "10:15",
       end: "11:45",
-      title: "IFI6071.DT Tarkvaratehnika",
+      title: "IFI6071.DT Tarkvaratehnika [TA/DM]",
       type: "Loeng",
       room: "A-402",
-      lecturer: "M. K.",
+      lecturer: "Mart Laanpere",
       color: "bg-blue-50 border border-blue-200 text-blue-900",
     },
     {
@@ -119,10 +119,10 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       day: "Mon",
       start: "12:15",
       end: "13:45",
-      title: "IFI6071.DT Tarkvaratehnika",
+      title: "IFI6071.DT Tarkvaratehnika [TA/DM]",
       type: "Praktikum",
       room: "A-402",
-      lecturer: "M. K.",
+      lecturer: "Mart Laanpere",
       color: "bg-emerald-50 border border-emerald-200 text-emerald-900",
     },
     {
@@ -130,10 +130,10 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       day: "Mon",
       start: "16:15",
       end: "17:45",
-      title: "IFI6066.DT Andmebaasid II",
+      title: "IFI6066.DT Andmebaasid II [TA]",
       type: "Praktikum",
       room: "A-400",
-      lecturer: "I. K.",
+      lecturer: "Ingrid Kool",
       color: "bg-emerald-50 border border-emerald-200 text-emerald-900",
     },
     {
@@ -141,10 +141,10 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       day: "Tue",
       start: "08:15",
       end: "09:45",
-      title: "IFI6067.DT Kasutajaliidese esteetika",
+      title: "IFI6067.DT Kasutajaliidese esteetika [DM]",
       type: "Loeng",
       room: "A-325",
-      lecturer: "D. M.",
+      lecturer: "David Murphy",
       color: "bg-purple-50 border border-purple-200 text-purple-900",
     },
     {
@@ -152,10 +152,10 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       day: "Tue",
       start: "10:15",
       end: "11:45",
-      title: "IFI6067.DT Kasutajaliidese esteetika",
+      title: "IFI6067.DT Kasutajaliidese esteetika [DM]",
       type: "Seminar",
       room: "A-325",
-      lecturer: "D. M.",
+      lecturer: "David Murphy",
       color: "bg-orange-50 border border-orange-200 text-orange-900",
     },
     {
@@ -166,7 +166,7 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       title: "Vabaaine",
       type: "Seminar",
       room: "M-218",
-      lecturer: "T. L.",
+      lecturer: "Tanel Liiv",
       color: "bg-orange-50 border border-orange-200 text-orange-900",
     },
     {
@@ -174,10 +174,10 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       day: "Thu",
       start: "12:15",
       end: "13:45",
-      title: "IFI6069.DT Veebiprogrammeerimine",
+      title: "IFI6069.DT Veebiprogrammeerimine [TA]",
       type: "Loeng",
       room: "S-244",
-      lecturer: "A. P.",
+      lecturer: "Andrus Paadimeister",
       color: "bg-blue-50 border border-blue-200 text-blue-900",
     },
     {
@@ -185,10 +185,10 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       day: "Fri",
       start: "10:15",
       end: "13:45",
-      title: "IFI6069.DT Veebiprogrammeerimine",
+      title: "IFI6069.DT Veebiprogrammeerimine [TA]",
       type: "Praktikum",
       room: "S-244",
-      lecturer: "A. P.",
+      lecturer: "Andrus Paadimeister",
       color: "bg-emerald-50 border border-emerald-200 text-emerald-900",
     },
   ],
@@ -201,7 +201,7 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       title: "Jaapani keel A2 (HIL6402.HT)",
       type: "Loeng",
       room: "S-238",
-      lecturer: "Masaki-Kadarik Akiko",
+      lecturer: "Akiko Masaki-Kadarik",
       color: "bg-blue-50 border border-blue-200 text-blue-900",
     },
     {
@@ -212,7 +212,7 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       title: "Kriitiline mõtlemine (HIK6082.HT)",
       type: "Loeng",
       room: "A-002",
-      lecturer: "Laas Oliver",
+      lecturer: "Oliver Laas",
       color: "bg-purple-50 border border-purple-200 text-purple-900",
     },
     {
@@ -223,7 +223,7 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       title: "Jaapani keel A2 (HIL6402.HT)",
       type: "Loeng",
       room: "S-238",
-      lecturer: "Masaki-Kadarik Akiko",
+      lecturer: "Akiko Masaki-Kadarik",
       color: "bg-blue-50 border border-blue-200 text-blue-900",
     },
     {
@@ -234,7 +234,7 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       title: "Jaapani keel A2 (HIL6402.HT)",
       type: "Loeng",
       room: "S-333",
-      lecturer: "Yano Maarja",
+      lecturer: "Maarja Yano",
       color: "bg-blue-50 border border-blue-200 text-blue-900",
     },
     {
@@ -245,7 +245,7 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       title: "Jaapani uuem kultuur (HIL6599.HT)",
       type: "Loeng",
       room: "S-240",
-      lecturer: "Allik Alari",
+      lecturer: "Alari Allik",
       color: "bg-purple-50 border border-purple-200 text-purple-900",
     },
     {
@@ -256,7 +256,7 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       title: "Jaapani keel A2 (HIL6402.HT)",
       type: "Loeng",
       room: "S-333",
-      lecturer: "Yano Maarja",
+      lecturer: "Maarja Yano",
       color: "bg-blue-50 border border-blue-200 text-blue-900",
     },
   ],
@@ -269,7 +269,7 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       title: "Kriitiline mõtlemine (HIK6082.HT)",
       type: "Loeng",
       room: "A-002",
-      lecturer: "Laas Oliver",
+      lecturer: "Oliver Laas",
       color: "bg-purple-50 border border-purple-200 text-purple-900",
     },
     {
@@ -280,7 +280,7 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       title: "Inglise keel B1.2 (LCE6324.HT)",
       type: "Loeng",
       room: "A-346",
-      lecturer: "Taiger Aita",
+      lecturer: "Aita Taiger",
       color: "bg-blue-50 border border-blue-200 text-blue-900",
     },
     {
@@ -291,7 +291,7 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       title: "Inglise keel B1.2 (LCE6324.HT)",
       type: "Loeng",
       room: "A-346",
-      lecturer: "Taiger Aita",
+      lecturer: "Aita Taiger",
       color: "bg-blue-50 border border-blue-200 text-blue-900",
     },
   ],
@@ -304,7 +304,7 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       title: "Ajakirjandus ja ühiskond (KOA6003.FK)",
       type: "Loeng",
       room: "S-420",
-      lecturer: "Kõnno Andres",
+      lecturer: "Andres Kõnno",
       color: "bg-blue-50 border border-blue-200 text-blue-900",
     },
     {
@@ -315,7 +315,7 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       title: "Audiovisuaalne loojutustus (BFM6037.FK)",
       type: "Loeng",
       room: "S-420",
-      lecturer: "Treufeldt Indrek",
+      lecturer: "Indrek Treufeldt",
       color: "bg-purple-50 border border-purple-200 text-purple-900",
     },
     {
@@ -326,7 +326,7 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       title: "Ajakirjanduse eriala praktika infopäev",
       type: "Info",
       room: "A-222",
-      lecturer: "Tigasson Külli-Riin",
+      lecturer: "Külli-Riin Tigasson",
       color: "bg-orange-50 border border-orange-200 text-orange-900",
     },
     {
@@ -337,7 +337,7 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       title: "Uudis (KOA6039.FK)",
       type: "Loeng",
       room: "M-225",
-      lecturer: "Eilat Taavi",
+      lecturer: "Taavi Eilat",
       color: "bg-blue-50 border border-blue-200 text-blue-900",
     },
     {
@@ -348,7 +348,7 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       title: "Erialane inglise keel I (LCE6511.HT)",
       type: "Loeng",
       room: "S-417",
-      lecturer: "Camara Helis",
+      lecturer: "Helis Camara",
       color: "bg-emerald-50 border border-emerald-200 text-emerald-900",
     },
     {
@@ -359,7 +359,7 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       title: "Erialane inglise keel I (LCE6511.HT)",
       type: "Loeng",
       room: "S-423",
-      lecturer: "Camara Helis",
+      lecturer: "Helis Camara",
       color: "bg-emerald-50 border border-emerald-200 text-emerald-900",
     },
     {
@@ -371,7 +371,7 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
         "Maailma kommunikatsiooniajalugu ja Eesti ajakirjanduse ajalugu (KOA6053.FK)",
       type: "Loeng",
       room: "N-307",
-      lecturer: "Hõbemägi Priit",
+      lecturer: "Priit Hõbemägi",
       color: "bg-purple-50 border border-purple-200 text-purple-900",
     },
     {
@@ -382,8 +382,80 @@ const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
       title: "AV tootmise alused (BFM6127.FK)",
       type: "Praktikum",
       room: "N-507",
-      lecturer: "Rajaleid Tarmo",
+      lecturer: "Tarmo Rajaleid",
       color: "bg-emerald-50 border border-emerald-200 text-emerald-900",
+    },
+  ],
+  "RIAGM-1": [
+    {
+      id: 401,
+      day: "Mon",
+      start: "10:15",
+      end: "11:45",
+      title: "Poliitiline teooria (RIA6001.YK)",
+      type: "Loeng",
+      room: "S-333",
+      lecturer: "Peeter Selg",
+      color: "bg-blue-50 border border-blue-200 text-blue-900",
+    },
+    {
+      id: 402,
+      day: "Tue",
+      start: "12:15",
+      end: "13:45",
+      title: "Võrdlev poliitika (RIA6002.YK)",
+      type: "Seminar",
+      room: "S-423",
+      lecturer: "Mari-Liis Jakobson",
+      color: "bg-orange-50 border border-orange-200 text-orange-900",
+    },
+  ],
+  "KAKOB-1": [
+    {
+      id: 501,
+      day: "Wed",
+      start: "08:15",
+      end: "09:45",
+      title: "Kasvatusfilosoofia (KAK6001.HT)",
+      type: "Loeng",
+      room: "M-225",
+      lecturer: "Tiiu Kuurme",
+      color: "bg-purple-50 border border-purple-200 text-purple-900",
+    },
+    {
+      id: 502,
+      day: "Wed",
+      start: "10:15",
+      end: "11:45",
+      title: "Eripedagoogika alused (KAK6002.HT)",
+      type: "Praktikum",
+      room: "A-222",
+      lecturer: "Lii Lilleoja",
+      color: "bg-emerald-50 border border-emerald-200 text-emerald-900",
+    },
+  ],
+  "IFFIM-1": [
+    {
+      id: 601,
+      day: "Mon",
+      start: "12:15",
+      end: "15:45",
+      title: "Kasutajakeskne disain (IFI7016.DT)",
+      type: "Praktikum",
+      room: "A-402",
+      lecturer: "David Murphy",
+      color: "bg-emerald-50 border border-emerald-200 text-emerald-900",
+    },
+    {
+      id: 602,
+      day: "Thu",
+      start: "10:15",
+      end: "11:45",
+      title: "Uurimismeetodid (IFI7001.DT)",
+      type: "Loeng",
+      room: "S-244",
+      lecturer: "Sonia Sousa",
+      color: "bg-blue-50 border border-blue-200 text-blue-900",
     },
   ],
 }
@@ -396,7 +468,7 @@ const WEEK_DAYS = [
   { id: "Fri", name: "Friday", date: "27.03" },
 ]
 
-type ViewMode = "HOME" | "BROWSE" | "TIMETABLE"
+type ViewMode = "HOME" | "BROWSE" | "TIMETABLE" | "GUIDE"
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -409,6 +481,9 @@ const App = () => {
     { id: "AP", name: "Andrus Paadimeister", instId: "SDT" },
     { id: "AA", name: "Alari Allik", instId: "BFM" },
     { id: "TE", name: "Taavi Eilat", instId: "BFM" },
+    { id: "OL", name: "Oliver Laas", instId: "HITI" },
+    { id: "AK", name: "Andres Kõnno", instId: "BFM" },
+    { id: "IT", name: "Indrek Treufeldt", instId: "BFM" },
   ]
 
   // Mock data for rooms
@@ -418,6 +493,9 @@ const App = () => {
     { id: "S-244", name: "S-244 - Lecture Hall", building: "S" },
     { id: "M-218", name: "M-218 - Terra Building", building: "M" },
     { id: "N-307", name: "N-307 - Nova Building", building: "N" },
+    { id: "S-333", name: "S-333 - Auditoorium", building: "S" },
+    { id: "A-002", name: "A-002 - Maximus", building: "A" },
+    { id: "M-225", name: "M-225 - Terra", building: "M" },
   ]
 
   // Calendar State
@@ -434,8 +512,11 @@ const App = () => {
   )
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null)
   const [searchQuery, setSearchQuery] = useState("")
-  const [language, setLanguage] = useState<"EST" | "ENG">("EST")
   const [notification, setNotification] = useState<string | null>(null)
+  const [browsePage, setBrowsePage] = useState(1)
+  const [showExportMenu, setShowExportMenu] = useState(false)
+  const [isCompareMode, setIsCompareMode] = useState(false)
+  const ITEMS_PER_PAGE = 6
 
   const showNotification = (msg: string) => {
     setNotification(msg)
@@ -554,7 +635,7 @@ const App = () => {
   }
 
   const goToGuide = () => {
-    handleInstructions()
+    setView("GUIDE")
   }
 
   const executeSearchResult = (result: SearchResult) => {
@@ -623,18 +704,17 @@ const App = () => {
     window.print()
   }
 
-  const handleExportICal = () => {
-    showNotification("Generating iCal file... Download will start shortly.")
+  const handleExportICal = (type: "APPLE" | "GOOGLE") => {
+    if (type === "GOOGLE") {
+      showNotification("Opening Google Calendar... Syncing events.")
+    } else {
+      showNotification("Generating iCal file... Download will start shortly.")
+    }
+    setShowExportMenu(false)
   }
 
   const handleInstructions = () => {
-    showNotification("Opening instructions PDF...")
-  }
-
-  const toggleLanguage = () => {
-    const newLang = language === "EST" ? "ENG" : "EST"
-    setLanguage(newLang)
-    showNotification(`Language switched to ${newLang}`)
+    setView("GUIDE")
   }
 
   const handleContactSupport = () => {
@@ -642,7 +722,8 @@ const App = () => {
   }
 
   // View renders
-  const renderHomeContent = () => (
+  const renderHomeContent = () => {
+    return (
     <div className="animate-in space-y-8 duration-500 fade-in slide-in-from-bottom-4">
       {/* Hero / Search Section */}
       <section className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
@@ -659,40 +740,54 @@ const App = () => {
             <Search className="absolute top-1/2 left-4 -translate-y-1/2 text-slate-400 transition-colors group-focus-within:text-red-600" />
             <input
               type="text"
-              placeholder="e.g. A-402, John Doe, IFIFB-2..."
+              placeholder="e.g. Informaatika, A-402, David Murphy..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full rounded-xl border border-slate-200 bg-slate-50 py-4 pr-4 pl-12 text-lg transition-all outline-none focus:border-red-600 focus:ring-2 focus:ring-red-100"
             />
+            
+            <div className="mt-2 flex items-center justify-between px-1">
+              <span className="text-xs text-slate-400">Press Enter to see all results</span>
+              <button 
+                type="button"
+                onClick={goToGuide}
+                className="text-xs font-medium text-red-600 hover:underline"
+              >
+                Don't know the abbreviation? View Guide
+              </button>
+            </div>
 
             {searchQuery.trim().length > 0 && (
-              <div className="absolute z-20 mt-2 w-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
-                {searchResults.length > 0 ? (
-                  searchResults.map((result) => (
-                    <button
-                      key={`${result.type}-${result.id}`}
-                      type="button"
-                      onClick={() => executeSearchResult(result)}
-                      className="w-full border-b border-slate-100 px-4 py-3 text-left transition-colors last:border-b-0 hover:bg-slate-50"
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <span className="font-semibold text-slate-900">
-                          {result.label}
-                        </span>
-                        <span className="rounded-full bg-slate-100 px-2 py-1 text-[10px] font-bold tracking-wider text-slate-500 uppercase">
-                          {result.type}
-                        </span>
-                      </div>
-                      <div className="mt-1 text-xs text-slate-500">
-                        {result.subtitle}
-                      </div>
-                    </button>
-                  ))
-                ) : (
-                  <div className="px-4 py-3 text-sm text-slate-500">
-                    No suggestions found.
-                  </div>
-                )}
+              <div className="absolute z-20 mt-2 w-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl ring-1 ring-black/5">
+                <div className="max-h-80 overflow-y-auto">
+                  {searchResults.length > 0 ? (
+                    searchResults.map((result) => (
+                      <button
+                        key={`${result.type}-${result.id}`}
+                        type="button"
+                        onClick={() => executeSearchResult(result)}
+                        className="w-full border-b border-slate-100 px-4 py-3 text-left transition-colors last:border-b-0 hover:bg-red-50"
+                      >
+                        <div className="flex items-center justify-between gap-3">
+                          <span className="font-semibold text-slate-900 group-hover:text-red-700">
+                            {result.label}
+                          </span>
+                          <span className="rounded-full bg-slate-100 px-2 py-1 text-[10px] font-bold tracking-wider text-slate-500 uppercase">
+                            {result.type}
+                          </span>
+                        </div>
+                        <div className="mt-1 text-xs text-slate-500">
+                          {result.subtitle}
+                        </div>
+                      </button>
+                    ))
+                  ) : (
+                    <div className="px-4 py-6 text-center">
+                      <Search className="mx-auto mb-2 h-8 w-8 text-slate-200" />
+                      <p className="text-sm text-slate-500">No matches found for "{searchQuery}"</p>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </form>
@@ -776,7 +871,8 @@ const App = () => {
         </span>
       </div>
     </div>
-  )
+    )
+  }
 
   const renderBrowseContent = () => {
     const titleMap: Record<string, string> = {
@@ -785,6 +881,15 @@ const App = () => {
       rooms: "Check Rooms",
       curricula: "Curricula / Courses",
     }
+
+    const filteredItems = browseCategory === "groups" 
+      ? MOCK_GROUPS.filter((g) => g.instId === selectedInstitute)
+      : browseCategory === "teachers"
+        ? MOCK_LECTURERS.filter((l) => l.instId === selectedInstitute)
+        : MOCK_ROOMS
+
+    const totalPages = Math.ceil(filteredItems.length / ITEMS_PER_PAGE)
+    const paginatedItems = filteredItems.slice((browsePage - 1) * ITEMS_PER_PAGE, browsePage * ITEMS_PER_PAGE)
 
     return (
       <div className="animate-in space-y-6 duration-500 fade-in slide-in-from-right-8">
@@ -819,7 +924,7 @@ const App = () => {
                 {MOCK_INSTITUTES.map((inst) => (
                   <li key={inst.id}>
                     <button
-                      onClick={() => setSelectedInstitute(inst.id)}
+                      onClick={() => { setSelectedInstitute(inst.id); setBrowsePage(1); }}
                       className={`w-full border-l-4 px-6 py-3 text-left text-sm font-medium transition-colors ${
                         selectedInstitute === inst.id
                           ? "border-red-700 bg-red-50 text-red-700"
@@ -834,77 +939,96 @@ const App = () => {
             </div>
 
             {/* Right Pane: Items View */}
-            <div className="bg-slate-50 p-6 md:col-span-8">
-              <h3 className="mb-4 text-xs font-bold tracking-wider text-slate-400 uppercase">
-                {browseCategory === "groups"
-                  ? "Available Groups"
-                  : browseCategory === "teachers"
-                    ? "Found Lecturers"
-                    : "Campus Rooms"}
-              </h3>
+            <div className="flex flex-col bg-slate-50 p-6 md:col-span-8">
+              <div className="grow">
+                <h3 className="mb-4 text-xs font-bold tracking-wider text-slate-400 uppercase">
+                  {browseCategory === "groups"
+                    ? "Available Groups"
+                    : browseCategory === "teachers"
+                      ? "Found Lecturers"
+                      : "Campus Rooms"}
+                </h3>
 
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {browseCategory === "groups" &&
-                  MOCK_GROUPS.filter((g) => g.instId === selectedInstitute).map(
-                    (group) => (
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {browseCategory === "groups" &&
+                    paginatedItems.map((group) => (
+                        <button
+                          key={(group as Group).id}
+                          onClick={() => goToTimetable(group as Group)}
+                          className="group/btn rounded-xl border border-slate-200 bg-white p-4 text-left transition-all hover:border-red-300 hover:shadow-md"
+                        >
+                          <div className="font-bold text-slate-900 transition-colors group-hover/btn:text-red-700">
+                            {(group as Group).id}
+                          </div>
+                          <div className="mt-1 text-sm text-slate-500">
+                            {(group as Group).name}
+                          </div>
+                        </button>
+                    ))}
+
+                  {browseCategory === "teachers" &&
+                    paginatedItems.map((lecturer) => (
                       <button
-                        key={group.id}
-                        onClick={() => goToTimetable(group)}
+                        key={(lecturer as Lecturer).id}
+                        onClick={() => goToLecturerSchedule(lecturer as Lecturer)}
                         className="group/btn rounded-xl border border-slate-200 bg-white p-4 text-left transition-all hover:border-red-300 hover:shadow-md"
                       >
                         <div className="font-bold text-slate-900 transition-colors group-hover/btn:text-red-700">
-                          {group.id}
+                          {(lecturer as Lecturer).name}
                         </div>
-                        <div className="mt-1 line-clamp-1 text-sm text-slate-500">
-                          {group.name}
+                        <div className="mt-1 text-sm text-slate-500">
+                          {(lecturer as Lecturer).id} • Room A-402
                         </div>
                       </button>
-                    )
-                  )}
+                    ))}
 
-                {browseCategory === "teachers" &&
-                  MOCK_LECTURERS.filter(
-                    (l) => l.instId === selectedInstitute
-                  ).map((lecturer) => (
-                    <button
-                      key={lecturer.id}
-                      onClick={() => goToLecturerSchedule(lecturer)}
-                      className="group/btn rounded-xl border border-slate-200 bg-white p-4 text-left transition-all hover:border-red-300 hover:shadow-md"
-                    >
-                      <div className="font-bold text-slate-900 transition-colors group-hover/btn:text-red-700">
-                        {lecturer.name}
-                      </div>
-                      <div className="mt-1 text-sm text-slate-500">
-                        {lecturer.id} • Room A-402
-                      </div>
-                    </button>
-                  ))}
+                  {browseCategory === "rooms" &&
+                    paginatedItems.map((room) => (
+                      <button
+                        key={(room as Room).id}
+                        onClick={() => goToRoomAvailability(room as Room)}
+                        className="group/btn rounded-xl border border-slate-200 bg-white p-4 text-left transition-all hover:border-red-300 hover:shadow-md"
+                      >
+                        <div className="font-bold text-slate-900 transition-colors group-hover/btn:text-red-700">
+                          {(room as Room).id}
+                        </div>
+                        <div className="mt-1 text-sm text-slate-500">
+                          {(room as Room).name}
+                        </div>
+                      </button>
+                    ))}
 
-                {browseCategory === "rooms" &&
-                  MOCK_ROOMS.map((room) => (
-                    <button
-                      key={room.id}
-                      onClick={() => goToRoomAvailability(room)}
-                      className="group/btn rounded-xl border border-slate-200 bg-white p-4 text-left transition-all hover:border-red-300 hover:shadow-md"
-                    >
-                      <div className="font-bold text-slate-900 transition-colors group-hover/btn:text-red-700">
-                        {room.id}
-                      </div>
-                      <div className="mt-1 text-sm text-slate-500">
-                        {room.name}
-                      </div>
-                    </button>
-                  ))}
-
-                {browseCategory === "groups" &&
-                  MOCK_GROUPS.filter((g) => g.instId === selectedInstitute)
-                    .length === 0 && (
+                  {filteredItems.length === 0 && (
                     <div className="col-span-full py-10 text-center text-slate-400">
                       <Users className="mx-auto mb-3 h-10 w-10 opacity-20" />
-                      <p>No groups found for this institute.</p>
+                      <p>No items found for this selection.</p>
                     </div>
                   )}
+                </div>
               </div>
+
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="mt-8 flex items-center justify-center gap-2 border-t border-slate-200 pt-6">
+                  <button
+                    disabled={browsePage === 1}
+                    onClick={() => setBrowsePage(browsePage - 1)}
+                    className="rounded-lg border border-slate-200 bg-white p-2 text-slate-600 transition-colors hover:bg-slate-50 disabled:opacity-30"
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                  </button>
+                  <span className="text-sm font-medium text-slate-600">
+                    Page {browsePage} of {totalPages}
+                  </span>
+                  <button
+                    disabled={browsePage === totalPages}
+                    onClick={() => setBrowsePage(browsePage + 1)}
+                    className="rounded-lg border border-slate-200 bg-white p-2 text-slate-600 transition-colors hover:bg-slate-50 disabled:opacity-30"
+                  >
+                    <ChevronRight className="h-5 w-5" />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -912,73 +1036,157 @@ const App = () => {
     )
   }
 
-  const renderTimetableContent = () => (
+  const renderGuideContent = () => {
+    return (
+    <div className="animate-in space-y-8 duration-500 fade-in slide-in-from-right-8">
+      <button
+        onClick={goHome}
+        className="group flex items-center gap-2 text-sm font-medium text-slate-500 transition-colors hover:text-red-700"
+      >
+        <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+        Back to Home
+      </button>
+
+      <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+        <h2 className="mb-6 text-3xl font-bold text-slate-900">User Guide & Instructions</h2>
+        
+        <div className="space-y-8">
+          <section>
+            <h3 className="mb-3 text-lg font-bold text-slate-800">1. Searching for Schedules</h3>
+            <p className="text-slate-600">You can use the search bar on the home page to find groups, lecturers, or rooms. Try typing keywords like "Informaatika" to see all related study groups.</p>
+          </section>
+
+          <section>
+            <h3 className="mb-3 text-lg font-bold text-slate-800">2. Understanding Abbreviations</h3>
+            <div className="rounded-xl border border-slate-100 bg-slate-50 p-4">
+              <table className="w-full text-left text-sm">
+                <thead>
+                  <tr className="border-b border-slate-200">
+                    <th className="pb-2 font-bold text-slate-700">Code</th>
+                    <th className="pb-2 font-bold text-slate-700">Meaning</th>
+                  </tr>
+                </thead>
+                <tbody className="text-slate-600">
+                  <tr><td className="py-2 font-mono font-bold text-red-700">IFIFB</td><td className="py-2">Informaatika (Bakalauruseõpe)</td></tr>
+                  <tr><td className="py-2 font-mono font-bold text-red-700">KOAB</td><td className="py-2">Ajakirjandus (Bakalauruseõpe)</td></tr>
+                  <tr><td className="py-2 font-mono font-bold text-red-700">HILAB</td><td className="py-2">Aasia uuringud (Bakalauruseõpe)</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section>
+            <h3 className="mb-3 text-lg font-bold text-slate-800">3. Calendar Integration</h3>
+            <p className="text-slate-600">Click the "Export to Calendar" button in any timetable view to sync with your device. We support both Apple Calendar (iCal) and Google Calendar (Android).</p>
+          </section>
+
+          <section>
+            <h3 className="mb-3 text-lg font-bold text-slate-800">4. Comparison Mode</h3>
+            <p className="text-slate-600 italic">Coming Soon: You will be able to overlay multiple schedules to find free slots for elective courses.</p>
+          </section>
+        </div>
+      </div>
+    </div>
+    )
+  }
+
+  const renderTimetableContent = () => {
+    return (
     <div className="animate-in space-y-6 duration-500 fade-in slide-in-from-bottom-4">
       <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <button
-          onClick={() => setView("BROWSE")}
+          onClick={goHome}
           className="group flex items-center gap-2 text-sm font-medium text-slate-500 transition-colors hover:text-red-700"
         >
           <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-          Back to Browse
+          Back to Home
         </button>
-        <div className="flex gap-2">
+        <div className="relative flex gap-2">
           <button
             onClick={handlePrint}
             className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-slate-50"
           >
             Print
           </button>
-          <button
-            onClick={handleExportICal}
-            className="rounded-lg bg-red-700 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-red-800"
-          >
-            Export to Calendar
-          </button>
+          <div className="relative">
+            <button
+              onClick={() => setShowExportMenu(!showExportMenu)}
+              className="rounded-lg bg-red-700 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-red-800"
+            >
+              Export to Calendar
+            </button>
+            {showExportMenu && (
+              <div className="absolute right-0 mt-2 w-48 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
+                <button
+                  onClick={() => handleExportICal("APPLE")}
+                  className="w-full px-4 py-2 text-left text-sm hover:bg-slate-50"
+                >
+                  Apple Calendar (iOS)
+                </button>
+                <button
+                  onClick={() => handleExportICal("GOOGLE")}
+                  className="w-full px-4 py-2 text-left text-sm hover:bg-slate-50"
+                >
+                  Google Calendar (Android)
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
       <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
-            {selectedGroup ? (
-              <>
-                Timetable:{" "}
-                <span className="text-red-700">{selectedGroup.id}</span>
-                <span className="ml-3 rounded-full bg-slate-100 px-2 py-1 text-xs tracking-[0.25em] text-slate-600 uppercase">
-                  {selectedGroup.name}
-                </span>
-              </>
-            ) : selectedLecturer ? (
-              <>
-                Schedule:{" "}
-                <span className="text-red-700">{selectedLecturer.name}</span>
-              </>
-            ) : selectedRoom ? (
-              <>
-                Availability:{" "}
-                <span className="text-red-700">{selectedRoom.id}</span>
-              </>
-            ) : (
-              "Timetable"
-            )}
-          </h2>
-          <p className="mt-1 text-slate-500">
-            {selectedGroup
-              ? selectedGroup.name
-              : selectedLecturer
-                ? `${selectedLecturer.instId} Institute`
-                : selectedRoom
-                  ? selectedRoom.name
-                  : "Unknown"}{" "}
-            • Spring Semester 2026
-          </p>
-          {selectedGroup && (
-            <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-red-100 bg-red-50 px-3 py-1 text-xs font-bold tracking-wider text-red-700 uppercase">
-              Majority: {selectedGroup.majority}
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
+                {selectedGroup ? (
+                  <>
+                    Timetable:{" "}
+                    <span className="text-red-700">{selectedGroup.id}</span>
+                    <span className="ml-3 rounded-full bg-slate-100 px-2 py-1 text-xs tracking-[0.25em] text-slate-600 uppercase">
+                      {selectedGroup.name}
+                    </span>
+                  </>
+                ) : selectedLecturer ? (
+                  <>
+                    Schedule:{" "}
+                    <span className="text-red-700">{selectedLecturer.name}</span>
+                  </>
+                ) : selectedRoom ? (
+                  <>
+                    Availability:{" "}
+                    <span className="text-red-700">{selectedRoom.id}</span>
+                  </>
+                ) : (
+                  "Timetable"
+                )}
+              </h2>
+              <p className="mt-1 text-slate-500">
+                {selectedGroup
+                  ? selectedGroup.name
+                  : selectedLecturer
+                    ? `${selectedLecturer.instId} Institute`
+                    : selectedRoom
+                      ? selectedRoom.name
+                      : "Unknown"}{" "}
+                • Spring Semester 2026
+              </p>
             </div>
-          )}
-        </div>
+            <div className="hidden items-center gap-3 md:flex">
+              <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium transition-all hover:bg-slate-100">
+                <input 
+                  type="checkbox" 
+                  checked={isCompareMode} 
+                  onChange={(e) => {
+                    setIsCompareMode(e.target.checked);
+                    if (e.target.checked) showNotification("Comparison mode active: Your schedule overlayed.");
+                  }}
+                  className="h-4 w-4 rounded border-slate-300 text-red-700 focus:ring-red-500" 
+                />
+                Compare with mine
+              </label>
+            </div>
+          </div>
 
         <div className="hidden md:block">
           <div className="grid grid-cols-5 gap-4">
@@ -1006,43 +1214,55 @@ const App = () => {
                   </div>
                   {/* Day Body */}
                   <div className="flex grow flex-col gap-2 rounded-b-xl border border-slate-200 bg-slate-50 p-2">
-                    {dayEvents.length === 0 ? (
+                    {dayEvents.length === 0 && !isCompareMode ? (
                       <div className="py-4 text-center text-xs font-medium text-slate-400 italic">
                         No classes
                       </div>
                     ) : (
-                      dayEvents.map((event) => (
-                        <div
-                          key={event.id}
-                          className={`flex flex-col justify-between rounded-lg p-3 shadow-sm ${event.color} overflow-hidden transition-transform hover:-translate-y-0.5`}
-                        >
-                          <div className="mb-2 flex items-start justify-between">
-                            <span className="rounded bg-white/60 px-2 py-1 text-xs leading-none font-bold shadow-sm">
-                              {event.start} - {event.end}
-                            </span>
+                      <>
+                        {isCompareMode && day.id === "Mon" && (
+                          <div className="mb-2 rounded-lg border-2 border-dashed border-red-200 bg-red-50/50 p-2 opacity-60">
+                             <div className="mb-1 text-[10px] font-bold text-red-400 uppercase tracking-tight">Your Schedule</div>
+                             <div className="text-xs font-bold text-red-700">My Elective Course</div>
+                             <div className="text-[10px] text-red-500">08:15 - 09:45</div>
                           </div>
-                          <h4
-                            className="mb-1 line-clamp-2 text-sm leading-tight font-bold"
-                            title={event.title}
+                        )}
+                        {dayEvents.map((event) => (
+                          <div
+                            key={event.id}
+                            className={`flex flex-col justify-between rounded-lg p-3 shadow-sm ${event.color} overflow-hidden transition-transform hover:-translate-y-0.5`}
                           >
-                            {event.title}
-                          </h4>
-                          <div className="mb-3 text-xs opacity-90">
-                            {event.type}
-                          </div>
+                            <div className="mb-2 flex items-start justify-between">
+                              <span className="whitespace-nowrap rounded bg-white/60 px-2 py-1 text-xs leading-none font-bold shadow-sm">
+                                {event.start} - {event.end}
+                              </span>
+                            </div>
+                            <h4
+                              className="mb-1 text-sm leading-tight font-bold break-words"
+                              style={{ hyphens: "auto" }}
+                              title={event.title}
+                            >
+                              {event.title}
+                            </h4>
+                            <div className="mb-3">
+                              <span className="inline-block rounded-md bg-white/60 px-1.5 py-0.5 text-[10px] font-bold tracking-wider uppercase shadow-sm">
+                                {event.type}
+                              </span>
+                            </div>
 
-                          <div className="mt-auto space-y-1">
-                            <div className="flex items-center gap-1.5 text-xs font-medium">
-                              <MapPin className="h-3 w-3" />
-                              {event.room}
-                            </div>
-                            <div className="flex items-center gap-1.5 text-xs font-medium">
-                              <User className="h-3 w-3" />
-                              {event.lecturer}
+                            <div className="mt-auto space-y-1">
+                              <div className="flex items-center gap-1.5 text-xs font-medium">
+                                <MapPin className="h-3 w-3" />
+                                {event.room}
+                              </div>
+                              <div className="flex items-center gap-1.5 text-xs font-medium">
+                                <User className="h-3 w-3" />
+                                {event.lecturer}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))
+                        ))}
+                      </>
                     )}
                   </div>
                 </div>
@@ -1093,7 +1313,8 @@ const App = () => {
                         </span>
                       </div>
                       <h4
-                        className="mb-3 line-clamp-2 text-base font-bold"
+                        className="mb-3 text-base font-bold break-words"
+                        style={{ hyphens: "auto" }}
                         title={event.title}
                       >
                         {event.title}
@@ -1115,7 +1336,8 @@ const App = () => {
         </div>
       </div>
     </div>
-  )
+    )
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
@@ -1157,13 +1379,6 @@ const App = () => {
               </button>
               <div className="mx-2 h-4 w-px bg-slate-200" />
               <button
-                onClick={toggleLanguage}
-                className="flex items-center gap-1 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
-              >
-                <Globe className="h-4 w-4" />
-                {language}
-              </button>
-              <button
                 onClick={() => showNotification("User profile coming soon!")}
                 className="rounded-full bg-slate-100 p-2 transition-colors hover:bg-slate-200"
               >
@@ -1181,88 +1396,43 @@ const App = () => {
           </div>
 
           {isMenuOpen && (
-            <div className="space-y-2 border-t border-slate-200 py-3 md:hidden">
+            <div className="space-y-1 border-t border-slate-200 px-2 py-3 md:hidden">
               <button
-                onClick={goHome}
-                className="block w-full px-2 py-2 text-left text-sm font-medium text-slate-700 hover:text-red-700"
+                onClick={() => { goHome(); setIsMenuOpen(false); }}
+                className="block w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-red-700"
               >
                 Home
               </button>
               <button
-                onClick={goToGuide}
-                className="block w-full px-2 py-2 text-left text-sm font-medium text-slate-700 hover:text-red-700"
+                onClick={() => { goToBrowse("groups"); setIsMenuOpen(false); }}
+                className="block w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-red-700"
+              >
+                Browse Study Groups
+              </button>
+              <button
+                onClick={() => { goToBrowse("teachers"); setIsMenuOpen(false); }}
+                className="block w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-red-700"
+              >
+                Browse Lecturers
+              </button>
+              <button
+                onClick={() => { goToBrowse("rooms"); setIsMenuOpen(false); }}
+                className="block w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-red-700"
+              >
+                Browse Rooms
+              </button>
+              <button
+                onClick={() => { handleInstructions(); setIsMenuOpen(false); }}
+                className="block w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-red-700"
               >
                 Instructions
-              </button>
-              <button
-                onClick={toggleLanguage}
-                className="flex w-full items-center gap-2 px-2 py-2 text-left text-sm font-medium text-slate-700 hover:text-red-700"
-              >
-                <Globe className="h-4 w-4" />
-                Language: {language}
-              </button>
-              <button
-                onClick={() => showNotification("User profile coming soon!")}
-                className="block w-full px-2 py-2 text-left text-sm font-medium text-slate-700 hover:text-red-700"
-              >
-                Profile
               </button>
             </div>
           )}
         </div>
       </nav>
 
-      {isMenuOpen && (
-        <div className="border-b border-slate-200 bg-white shadow-sm md:hidden">
-          <div className="space-y-2 px-4 py-4">
-            <button
-              onClick={() => {
-                goHome()
-                setIsMenuOpen(false)
-              }}
-              className="w-full rounded-lg px-3 py-3 text-left text-slate-700 transition-colors hover:bg-slate-50"
-            >
-              Home
-            </button>
-            <button
-              onClick={() => {
-                goToBrowse("groups")
-                setIsMenuOpen(false)
-              }}
-              className="w-full rounded-lg px-3 py-3 text-left text-slate-700 transition-colors hover:bg-slate-50"
-            >
-              Browse Study Groups
-            </button>
-            <button
-              onClick={() => {
-                goToBrowse("teachers")
-                setIsMenuOpen(false)
-              }}
-              className="w-full rounded-lg px-3 py-3 text-left text-slate-700 transition-colors hover:bg-slate-50"
-            >
-              Browse Lecturers
-            </button>
-            <button
-              onClick={() => {
-                goToBrowse("rooms")
-                setIsMenuOpen(false)
-              }}
-              className="w-full rounded-lg px-3 py-3 text-left text-slate-700 transition-colors hover:bg-slate-50"
-            >
-              Browse Rooms
-            </button>
-            <button
-              onClick={() => {
-                handleInstructions()
-                setIsMenuOpen(false)
-              }}
-              className="w-full rounded-lg px-3 py-3 text-left text-slate-700 transition-colors hover:bg-slate-50"
-            >
-              Instructions
-            </button>
-          </div>
-        </div>
-      )}
+
 
       {/* --- Main Content --- */}
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -1272,6 +1442,7 @@ const App = () => {
             {view === "HOME" && renderHomeContent()}
             {view === "BROWSE" && renderBrowseContent()}
             {view === "TIMETABLE" && renderTimetableContent()}
+            {view === "GUIDE" && renderGuideContent()}
           </div>
 
           {/* Right Column: Persistent Sidebar */}
@@ -1319,7 +1490,7 @@ const App = () => {
               </div>
 
               <div className="mb-3 grid grid-cols-7 gap-1 text-center text-xs font-semibold tracking-wider uppercase">
-                {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
+                {["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].map((d, i) => (
                   <div key={i} className="text-slate-400">
                     {d}
                   </div>
@@ -1508,7 +1679,7 @@ const App = () => {
       {/* --- Notification Toast --- */}
       {notification && (
         <div className="fixed bottom-8 left-1/2 z-100 flex -translate-x-1/2 animate-in items-center gap-3 rounded-xl border border-slate-700 bg-slate-900 px-6 py-3 text-white shadow-2xl duration-300 fade-in slide-in-from-bottom-4">
-          <AlertCircle className="h-5 w-5 text-red-500" />
+          <Info className="h-5 w-5 text-blue-400" />
           <span className="font-medium">{notification}</span>
         </div>
       )}
