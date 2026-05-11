@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from 'react';
-import { Search, MapPin, BookOpen, User, Menu, X, ChevronLeft, ChevronRight, Globe, Users, ArrowLeft, Clock, Filter, AlertCircle, Calendar } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Search, MapPin, BookOpen, User, Menu, X, ChevronLeft, ChevronRight, Globe, Users, ArrowLeft, Clock, Filter, Info, Calendar } from 'lucide-react';
 
 // --- MOCK DATA ---
 const MOCK_INSTITUTES = [
@@ -12,34 +12,34 @@ const MOCK_INSTITUTES = [
 ];
 
 const MOCK_GROUPS = [
-  { id: 'IFIFB-2', name: 'IFIFB-2 - Informaatika', instId: 'SDT' },
-  { id: 'IFIFB-1', name: 'IFIFB-1 - Informaatika', instId: 'SDT' },
-  { id: 'IFFIM-1', name: 'IFFIM-1 - Inimese ja arvuti interaktsioon', instId: 'SDT' },
-  { id: 'KOKOB-3', name: 'KOKOB-3 - Ristmeedia', instId: 'BFM' },
-  { id: 'RIAGM-1', name: 'RIAGM-1 - Riigiteadused', instId: 'SOG' },
-  { id: 'KAKOB-1', name: 'KAKOB-1 - Kasvatusteadused', instId: 'SEH' },
-  { id: 'HILAB_jpn-1', name: 'Aasia uuringud (Jaapani uuringud) 1. õ.-a.', instId: 'BFM' }, // Added
-  { id: 'KAANB-1', name: 'Andragoogika 1. õ.-a.', instId: 'SEH' }, // Added
-  { id: 'KOAB-1', name: 'Ajakirjandus 1.õ.-a.', instId: 'BFM' }, // Added
+  { id: 'IFIFB-2', name: 'IFIFB-2 - Informaatika', instId: 'SDT', majority: 'TA' },
+  { id: 'IFIFB-1', name: 'IFIFB-1 - Informaatika', instId: 'SDT', majority: 'DM' },
+  { id: 'IFFIM-1', name: 'IFFIM-1 - Inimese ja arvuti interaktsioon', instId: 'SDT', majority: 'TA' },
+  { id: 'KOKOB-3', name: 'KOKOB-3 - Ristmeedia', instId: 'BFM', majority: 'DM' },
+  { id: 'RIAGM-1', name: 'RIAGM-1 - Riigiteadused', instId: 'SOG', majority: 'TA' },
+  { id: 'KAKOB-1', name: 'KAKOB-1 - Kasvatusteadused', instId: 'SEH', majority: 'DM' },
+  { id: 'HILAB_jpn-1', name: 'Aasia uuringud (Jaapani uuringud) 1. õ.-a.', instId: 'BFM', majority: 'TA' },
+  { id: 'KAANB-1', name: 'Andragoogika 1. õ.-a.', instId: 'SEH', majority: 'DM' },
+  { id: 'KOAB-1', name: 'Ajakirjandus 1.õ.-a.', instId: 'BFM', majority: 'TA' },
 ];
 
 const MOCK_TIMETABLES: Record<string, any[]> = {
   'IFIFB-2': [
-    { id: 1, day: 'Mon', start: '10:15', end: '11:45', title: 'IFI6071.DT Tarkvaratehnika', type: 'Loeng', room: 'A-402', lecturer: 'M. K.', color: 'bg-blue-50 border border-blue-200 text-blue-900' },
-    { id: 2, day: 'Mon', start: '12:15', end: '13:45', title: 'IFI6071.DT Tarkvaratehnika', type: 'Praktikum', room: 'A-402', lecturer: 'M. K.', color: 'bg-emerald-50 border border-emerald-200 text-emerald-900' },
-    { id: 3, day: 'Mon', start: '16:15', end: '17:45', title: 'IFI6066.DT Andmebaasid II', type: 'Praktikum', room: 'A-400', lecturer: 'I. K.', color: 'bg-emerald-50 border border-emerald-200 text-emerald-900' },
-    { id: 4, day: 'Tue', start: '08:15', end: '09:45', title: 'IFI6067.DT Kasutajaliidese esteetika', type: 'Loeng', room: 'A-325', lecturer: 'D. M.', color: 'bg-purple-50 border border-purple-200 text-purple-900' },
-    { id: 5, day: 'Tue', start: '10:15', end: '11:45', title: 'IFI6067.DT Kasutajaliidese esteetika', type: 'Seminar', room: 'A-325', lecturer: 'D. M.', color: 'bg-orange-50 border border-orange-200 text-orange-900' },
-    { id: 6, day: 'Wed', start: '14:15', end: '15:45', title: 'Vabaaine', type: 'Seminar', room: 'M-218', lecturer: 'T. L.', color: 'bg-orange-50 border border-orange-200 text-orange-900' },
-    { id: 7, day: 'Thu', start: '12:15', end: '13:45', title: 'IFI6069.DT Veebiprogrammeerimine', type: 'Loeng', room: 'S-244', lecturer: 'A. P.', color: 'bg-blue-50 border border-blue-200 text-blue-900' },
-    { id: 8, day: 'Fri', start: '10:15', end: '13:45', title: 'IFI6069.DT Veebiprogrammeerimine', type: 'Praktikum', room: 'S-244', lecturer: 'A. P.', color: 'bg-emerald-50 border border-emerald-200 text-emerald-900' }
+    { id: 1, day: 'Mon', start: '10:15', end: '11:45', title: 'IFI6071.DT Tarkvaratehnika', type: 'Loeng', room: 'A-402', lecturer: 'Mart Laanpere', color: 'bg-blue-50 border border-blue-200 text-blue-900' },
+    { id: 2, day: 'Mon', start: '12:15', end: '13:45', title: 'IFI6071.DT Tarkvaratehnika', type: 'Praktikum', room: 'A-402', lecturer: 'Mart Laanpere', color: 'bg-emerald-50 border border-emerald-200 text-emerald-900' },
+    { id: 3, day: 'Mon', start: '16:15', end: '17:45', title: 'IFI6066.DT Andmebaasid II', type: 'Praktikum', room: 'A-400', lecturer: 'Ingrid Kool', color: 'bg-emerald-50 border border-emerald-200 text-emerald-900' },
+    { id: 4, day: 'Tue', start: '08:15', end: '09:45', title: 'IFI6067.DT Kasutajaliidese esteetika', type: 'Loeng', room: 'A-325', lecturer: 'David Murphy', color: 'bg-purple-50 border border-purple-200 text-purple-900' },
+    { id: 5, day: 'Tue', start: '10:15', end: '11:45', title: 'IFI6067.DT Kasutajaliidese esteetika', type: 'Seminar', room: 'A-325', lecturer: 'David Murphy', color: 'bg-orange-50 border border-orange-200 text-orange-900' },
+    { id: 6, day: 'Wed', start: '14:15', end: '15:45', title: 'Vabaaine', type: 'Seminar', room: 'M-218', lecturer: 'Taavi Lepp', color: 'bg-orange-50 border border-orange-200 text-orange-900' },
+    { id: 7, day: 'Thu', start: '12:15', end: '13:45', title: 'IFI6069.DT Veebiprogrammeerimine', type: 'Loeng', room: 'S-244', lecturer: 'Andrus Paadimeister', color: 'bg-blue-50 border border-blue-200 text-blue-900' },
+    { id: 8, day: 'Fri', start: '10:15', end: '13:45', title: 'IFI6069.DT Veebiprogrammeerimine', type: 'Praktikum', room: 'S-244', lecturer: 'Andrus Paadimeister', color: 'bg-emerald-50 border border-emerald-200 text-emerald-900' }
   ],
   'HILAB_jpn-1': [
     { id: 101, day: 'Mon', start: '10:15', end: '11:45', title: 'Jaapani keel A2 (HIL6402.HT)', type: 'Loeng', room: 'S-238', lecturer: 'Masaki-Kadarik Akiko', color: 'bg-blue-50 border border-blue-200 text-blue-900' },
     { id: 102, day: 'Mon', start: '14:15', end: '15:45', title: 'Kriitiline mõtlemine (HIK6082.HT)', type: 'Loeng', room: 'A-002', lecturer: 'Laas Oliver', color: 'bg-purple-50 border border-purple-200 text-purple-900' },
     { id: 103, day: 'Tue', start: '10:15', end: '11:45', title: 'Jaapani keel A2 (HIL6402.HT)', type: 'Loeng', room: 'S-238', lecturer: 'Masaki-Kadarik Akiko', color: 'bg-blue-50 border border-blue-200 text-blue-900' },
     { id: 104, day: 'Wed', start: '10:15', end: '11:45', title: 'Jaapani keel A2 (HIL6402.HT)', type: 'Loeng', room: 'S-333', lecturer: 'Yano Maarja', color: 'bg-blue-50 border border-blue-200 text-blue-900' },
-    { id: 105, day: 'Wed', start: '12:15', end: '13:45', title: 'Jaapani uuem kultuur (HIL6599.HT)', type: 'Loeng', room: 'S-240', lecturer: 'Allik Alari', color: 'bg-purple-50 border border-purple-200 text-purple-900' },
+    { id: 105, day: 'Wed', start: '12:15', end: '13:45', title: 'Jaapani uuem kultuur (HIL6599.HT)', type: 'Loeng', room: 'S-240', lecturer: 'Alari Allik', color: 'bg-purple-50 border border-purple-200 text-purple-900' },
     { id: 106, day: 'Thu', start: '10:15', end: '11:45', title: 'Jaapani keel A2 (HIL6402.HT)', type: 'Loeng', room: 'S-333', lecturer: 'Yano Maarja', color: 'bg-blue-50 border border-blue-200 text-blue-900' },
   ],
   'KAANB-1': [
@@ -51,7 +51,7 @@ const MOCK_TIMETABLES: Record<string, any[]> = {
     { id: 301, day: 'Mon', start: '12:15', end: '13:45', title: 'Ajakirjandus ja ühiskond (KOA6003.FK)', type: 'Loeng', room: 'S-420', lecturer: 'Kõnno Andres', color: 'bg-blue-50 border border-blue-200 text-blue-900' },
     { id: 302, day: 'Mon', start: '14:15', end: '15:45', title: 'Audiovisuaalne loojutustus (BFM6037.FK)', type: 'Loeng', room: 'S-420', lecturer: 'Treufeldt Indrek', color: 'bg-purple-50 border border-purple-200 text-purple-900' },
     { id: 303, day: 'Tue', start: '12:00', end: '15:00', title: 'Ajakirjanduse eriala praktika infopäev', type: 'Info', room: 'A-222', lecturer: 'Tigasson Külli-Riin', color: 'bg-orange-50 border border-orange-200 text-orange-900' },
-    { id: 304, day: 'Wed', start: '08:15', end: '09:45', title: 'Uudis (KOA6039.FK)', type: 'Loeng', room: 'M-225', lecturer: 'Eilat Taavi', color: 'bg-blue-50 border border-blue-200 text-blue-900' },
+    { id: 304, day: 'Wed', start: '08:15', end: '09:45', title: 'Uudis (KOA6039.FK)', type: 'Loeng', room: 'M-225', lecturer: 'Taavi Eilat', color: 'bg-blue-50 border border-blue-200 text-blue-900' },
     { id: 305, day: 'Wed', start: '10:15', end: '11:45', title: 'Erialane inglise keel I (LCE6511.HT)', type: 'Loeng', room: 'S-417', lecturer: 'Camara Helis', color: 'bg-emerald-50 border border-emerald-200 text-emerald-900' },
     { id: 306, day: 'Thu', start: '10:15', end: '11:45', title: 'Erialane inglise keel I (LCE6511.HT)', type: 'Loeng', room: 'S-423', lecturer: 'Camara Helis', color: 'bg-emerald-50 border border-emerald-200 text-emerald-900' },
     { id: 307, day: 'Thu', start: '12:15', end: '13:45', title: 'Maailma kommunikatsiooniajalugu ja Eesti ajakirjanduse ajalugu (KOA6053.FK)', type: 'Loeng', room: 'N-307', lecturer: 'Hõbemägi Priit', color: 'bg-purple-50 border border-purple-200 text-purple-900' },
@@ -67,7 +67,17 @@ const WEEK_DAYS = [
   { id: 'Fri', name: 'Friday', date: '27.03' },
 ];
 
-type ViewMode = 'HOME' | 'BROWSE' | 'TIMETABLE';
+type ViewMode = 'HOME' | 'GUIDE' | 'BROWSE' | 'TIMETABLE';
+
+type SearchResult = {
+  type: 'group' | 'lecturer' | 'institute';
+  id: string;
+  label: string;
+  subtitle: string;
+  score: number;
+};
+
+const PAGE_SIZE = 8;
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -103,8 +113,63 @@ const App = () => {
   const [selectedLecturer, setSelectedLecturer] = useState<any>(null);
   const [selectedRoom, setSelectedRoom] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [browsePage, setBrowsePage] = useState(1);
   const [language, setLanguage] = useState<'EST' | 'ENG'>('EST');
   const [notification, setNotification] = useState<string | null>(null);
+
+  const normalize = (value: string) => value.toLowerCase().trim();
+  const getInstituteName = (instId: string) => MOCK_INSTITUTES.find(inst => inst.id === instId)?.name || instId;
+
+  const rankMatch = (query: string, values: string[]) => {
+    if (values.some(value => normalize(value) === query)) return 0;
+    if (values.some(value => normalize(value).startsWith(query))) return 1;
+    return 2;
+  };
+
+  const searchResults = useMemo<SearchResult[]>(() => {
+    const query = normalize(searchQuery);
+    if (!query) {
+      return [];
+    }
+
+    const groupResults = MOCK_GROUPS
+      .filter(group => [group.id, group.name, getInstituteName(group.instId)].some(value => normalize(value).includes(query)))
+      .map(group => ({
+        type: 'group' as const,
+        id: group.id,
+        label: group.id,
+        subtitle: `${group.name} • ${getInstituteName(group.instId)}`,
+        score: rankMatch(query, [group.id, group.name]),
+      }));
+
+    const lecturerResults = MOCK_LECTURERS
+      .filter(lecturer => [lecturer.id, lecturer.name, getInstituteName(lecturer.instId)].some(value => normalize(value).includes(query)))
+      .map(lecturer => ({
+        type: 'lecturer' as const,
+        id: lecturer.id,
+        label: lecturer.name,
+        subtitle: `${lecturer.id} • ${getInstituteName(lecturer.instId)}`,
+        score: rankMatch(query, [lecturer.id, lecturer.name]),
+      }));
+
+    const instituteResults = MOCK_INSTITUTES
+      .filter(inst => [inst.id, inst.name].some(value => normalize(value).includes(query)))
+      .map(inst => ({
+        type: 'institute' as const,
+        id: inst.id,
+        label: inst.name,
+        subtitle: `Institute • ${inst.id}`,
+        score: rankMatch(query, [inst.id, inst.name]),
+      }));
+
+    return [...groupResults, ...lecturerResults, ...instituteResults]
+      .sort((a, b) => a.score - b.score || a.label.localeCompare(b.label))
+      .slice(0, 8);
+  }, [searchQuery]);
+
+  useEffect(() => {
+    setBrowsePage(1);
+  }, [browseCategory, selectedInstitute]);
 
   const showNotification = (msg: string) => {
     setNotification(msg);
@@ -120,6 +185,7 @@ const App = () => {
 
   // Navigation Handlers
   const goHome = () => {
+    setIsMenuOpen(false);
     setView('HOME');
     setBrowseCategory(null);
     setSelectedGroup(null);
@@ -129,11 +195,14 @@ const App = () => {
   };
 
   const goToBrowse = (catId: string) => {
+    setIsMenuOpen(false);
     setBrowseCategory(catId);
+    setBrowsePage(1);
     setView('BROWSE');
   };
 
   const goToTimetable = (group: any) => {
+    setIsMenuOpen(false);
     setSelectedGroup(group);
     setSelectedLecturer(null);
     setSelectedRoom(null);
@@ -141,6 +210,7 @@ const App = () => {
   };
 
   const goToLecturerSchedule = (lecturer: any) => {
+    setIsMenuOpen(false);
     setSelectedLecturer(lecturer);
     setSelectedGroup(null);
     setSelectedRoom(null);
@@ -148,27 +218,68 @@ const App = () => {
   };
 
   const goToRoomAvailability = (room: any) => {
+    setIsMenuOpen(false);
     setSelectedRoom(room);
     setSelectedGroup(null);
     setSelectedLecturer(null);
     setView('TIMETABLE');
   };
 
+  const goToGuide = () => {
+    setIsMenuOpen(false);
+    setView('GUIDE');
+  };
+
+  const executeSearchResult = (result: SearchResult) => {
+    if (result.type === 'group') {
+      const foundGroup = MOCK_GROUPS.find(group => group.id === result.id);
+      if (foundGroup) {
+        setSearchQuery(foundGroup.id);
+        goToTimetable(foundGroup);
+      }
+      return;
+    }
+
+    if (result.type === 'lecturer') {
+      const foundLecturer = MOCK_LECTURERS.find(lecturer => lecturer.id === result.id);
+      if (foundLecturer) {
+        setSearchQuery(foundLecturer.name);
+        goToLecturerSchedule(foundLecturer);
+      }
+      return;
+    }
+
+    setSearchQuery(result.label);
+    setSelectedInstitute(result.id);
+    setBrowseCategory('groups');
+    setView('BROWSE');
+  };
+
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const foundGroup = MOCK_GROUPS.find(g => g.id.toLowerCase() === searchQuery.trim().toLowerCase());
-    if (foundGroup) {
-      goToTimetable(foundGroup);
+    if (searchResults.length > 0) {
+      executeSearchResult(searchResults[0]);
     } else if (searchQuery.trim().length > 0) {
-      showNotification(`No group found for "${searchQuery}"`);
+      showNotification(`No matches found for "${searchQuery}"`);
     }
   };
 
   const handleQuickSearchClick = (groupId: string) => {
-    const foundGroup = MOCK_GROUPS.find(g => g.id === groupId);
+    const quickMatch = searchResults.find(result => result.type === 'group' && result.id === groupId);
+    if (quickMatch) {
+      executeSearchResult(quickMatch);
+      return;
+    }
+
+    const foundGroup = MOCK_GROUPS.find(group => group.id === groupId);
     if (foundGroup) {
-      setSearchQuery(groupId);
-      goToTimetable(foundGroup);
+      executeSearchResult({
+        type: 'group',
+        id: foundGroup.id,
+        label: foundGroup.id,
+        subtitle: foundGroup.name,
+        score: 0,
+      });
     }
   };
 
@@ -177,11 +288,7 @@ const App = () => {
   };
 
   const handleExportICal = () => {
-    showNotification("Generating iCal file... Download will start shortly.");
-  };
-
-  const handleInstructions = () => {
-    showNotification("Opening instructions PDF...");
+    showNotification("Generating iCal file... Compatible with Android and iOS calendar apps.");
   };
 
   const toggleLanguage = () => {
@@ -212,6 +319,27 @@ const App = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-red-100 focus:border-red-600 transition-all text-lg"
             />
+
+            {searchQuery.trim().length > 0 && (
+              <div className="absolute mt-2 w-full bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden z-20">
+                {searchResults.length > 0 ? searchResults.map((result) => (
+                  <button
+                    key={`${result.type}-${result.id}`}
+                    type="button"
+                    onClick={() => executeSearchResult(result)}
+                    className="w-full text-left px-4 py-3 hover:bg-slate-50 border-b border-slate-100 last:border-b-0 transition-colors"
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="font-semibold text-slate-900">{result.label}</span>
+                      <span className="text-[10px] uppercase tracking-wider font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded-full">{result.type}</span>
+                    </div>
+                    <div className="text-xs text-slate-500 mt-1">{result.subtitle}</div>
+                  </button>
+                )) : (
+                  <div className="px-4 py-3 text-sm text-slate-500">No suggestions found.</div>
+                )}
+              </div>
+            )}
           </form>
 
           <div className="mt-4 flex flex-wrap gap-2 items-center">
@@ -243,10 +371,42 @@ const App = () => {
       {/* Security Alert Banner */}
       <div className="flex items-center gap-3 p-4 bg-blue-50 border border-blue-100 rounded-xl text-blue-700 text-sm">
         <div className="bg-blue-200 p-1.5 rounded-full">
-          <AlertCircle className="w-4 h-4" />
+          <Info className="w-4 h-4" />
         </div>
         <span>Connection is secure. All timetable data is encrypted via SSL.</span>
       </div>
+    </div>
+  );
+
+  const renderGuideContent = () => (
+    <div className="space-y-6 animate-in fade-in slide-in-from-right-8 duration-500">
+      <button
+        onClick={goHome}
+        className="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-red-700 transition-colors group"
+      >
+        <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+        Back to Home
+      </button>
+
+      <section className="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
+        <h2 className="text-2xl font-bold text-slate-900 mb-2">Instructions & Guide</h2>
+        <p className="text-slate-500 mb-6">Use this quick guide to navigate schedules without leaving the app.</p>
+
+        <div className="space-y-4">
+          <div className="p-4 rounded-xl border border-slate-200 bg-slate-50">
+            <h3 className="font-semibold text-slate-900 mb-1">1. Search and suggestions</h3>
+            <p className="text-sm text-slate-600">Start typing a group, lecturer, or institute name. Suggestions update live and support partial matches.</p>
+          </div>
+          <div className="p-4 rounded-xl border border-slate-200 bg-slate-50">
+            <h3 className="font-semibold text-slate-900 mb-1">2. Browse by category</h3>
+            <p className="text-sm text-slate-600">Open Browse to filter by institutes, then move through pages to find more groups, lecturers, or rooms.</p>
+          </div>
+          <div className="p-4 rounded-xl border border-slate-200 bg-slate-50">
+            <h3 className="font-semibold text-slate-900 mb-1">3. Manage your calendar</h3>
+            <p className="text-sm text-slate-600">Use Export iCal to generate a file compatible with Android and iOS calendar apps.</p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 
@@ -257,6 +417,27 @@ const App = () => {
       'rooms': 'Check Rooms',
       'curricula': 'Curricula / Courses'
     };
+
+    const filteredGroups = MOCK_GROUPS.filter(group => group.instId === selectedInstitute);
+    const filteredLecturers = MOCK_LECTURERS.filter(lecturer => lecturer.instId === selectedInstitute);
+    const filteredRooms = MOCK_ROOMS;
+
+    const allItems = browseCategory === 'groups'
+      ? filteredGroups
+      : browseCategory === 'teachers'
+      ? filteredLecturers
+      : browseCategory === 'rooms'
+      ? filteredRooms
+      : [];
+
+    const totalPages = Math.max(1, Math.ceil(allItems.length / PAGE_SIZE));
+    const safePage = Math.min(browsePage, totalPages);
+    const pageStart = (safePage - 1) * PAGE_SIZE;
+    const pageEnd = pageStart + PAGE_SIZE;
+
+    const pagedGroups = filteredGroups.slice(pageStart, pageEnd);
+    const pagedLecturers = filteredLecturers.slice(pageStart, pageEnd);
+    const pagedRooms = filteredRooms.slice(pageStart, pageEnd);
 
     return (
       <div className="space-y-6 animate-in fade-in slide-in-from-right-8 duration-500">
@@ -287,7 +468,10 @@ const App = () => {
                 {MOCK_INSTITUTES.map(inst => (
                   <li key={inst.id}>
                     <button 
-                      onClick={() => setSelectedInstitute(inst.id)}
+                      onClick={() => {
+                        setSelectedInstitute(inst.id);
+                        setBrowsePage(1);
+                      }}
                       className={`w-full text-left px-6 py-3 text-sm font-medium transition-colors border-l-4 ${
                         selectedInstitute === inst.id 
                           ? 'bg-red-50 text-red-700 border-red-700' 
@@ -308,18 +492,21 @@ const App = () => {
               </h3>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {browseCategory === 'groups' && MOCK_GROUPS.filter(g => g.instId === selectedInstitute).map(group => (
+                {browseCategory === 'groups' && pagedGroups.map(group => (
                   <button
                     key={group.id}
                     onClick={() => goToTimetable(group)}
                     className="bg-white border border-slate-200 p-4 rounded-xl text-left hover:border-red-300 hover:shadow-md transition-all group/btn"
                   >
-                    <div className="font-bold text-slate-900 group-hover/btn:text-red-700 transition-colors">{group.id}</div>
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="font-bold text-slate-900 group-hover/btn:text-red-700 transition-colors">{group.id}</div>
+                      <span className="text-[10px] uppercase tracking-wider font-bold bg-red-50 text-red-700 border border-red-100 px-2 py-1 rounded-full">{group.majority}</span>
+                    </div>
                     <div className="text-sm text-slate-500 mt-1 line-clamp-1">{group.name}</div>
                   </button>
                 ))}
 
-                {browseCategory === 'teachers' && MOCK_LECTURERS.filter(l => l.instId === selectedInstitute).map(lecturer => (
+                {browseCategory === 'teachers' && pagedLecturers.map(lecturer => (
                   <button
                     key={lecturer.id}
                     onClick={() => goToLecturerSchedule(lecturer)}
@@ -330,7 +517,7 @@ const App = () => {
                   </button>
                 ))}
 
-                {browseCategory === 'rooms' && MOCK_ROOMS.map(room => (
+                {browseCategory === 'rooms' && pagedRooms.map(room => (
                   <button
                     key={room.id}
                     onClick={() => goToRoomAvailability(room)}
@@ -341,13 +528,35 @@ const App = () => {
                   </button>
                 ))}
 
-                {(browseCategory === 'groups' && MOCK_GROUPS.filter(g => g.instId === selectedInstitute).length === 0) && (
+                {(browseCategory === 'groups' && filteredGroups.length === 0) && (
                   <div className="col-span-full py-10 text-center text-slate-400">
                     <Users className="w-10 h-10 mx-auto mb-3 opacity-20" />
                     <p>No groups found for this institute.</p>
                   </div>
                 )}
               </div>
+
+              {allItems.length > 0 && (
+                <div className="mt-5 flex items-center justify-between gap-3 border-t border-slate-200 pt-4">
+                  <p className="text-xs text-slate-500 font-medium">Page {safePage} of {totalPages}</p>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setBrowsePage(prev => Math.max(1, prev - 1))}
+                      disabled={safePage === 1}
+                      className="px-3 py-1.5 text-sm font-medium bg-white border border-slate-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-100"
+                    >
+                      Previous
+                    </button>
+                    <button
+                      onClick={() => setBrowsePage(prev => Math.min(totalPages, prev + 1))}
+                      disabled={safePage === totalPages}
+                      className="px-3 py-1.5 text-sm font-medium bg-white border border-slate-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-100"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -359,11 +568,11 @@ const App = () => {
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <button 
-          onClick={() => setView('BROWSE')}
+          onClick={goHome}
           className="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-red-700 transition-colors group"
         >
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-          Back to Browse
+          Back to Home
         </button>
         <div className="flex gap-2">
           <button onClick={handlePrint} className="px-3 py-1.5 text-sm font-medium bg-white border border-slate-200 rounded-lg shadow-sm hover:bg-slate-50">Print</button>
@@ -381,6 +590,11 @@ const App = () => {
           <p className="text-slate-500 mt-1">
             {selectedGroup ? selectedGroup.name : selectedLecturer ? `${selectedLecturer.instId} Institute` : selectedRoom ? selectedRoom.name : 'Unknown'} • Spring Semester 2026
           </p>
+          {selectedGroup && (
+            <div className="mt-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider bg-red-50 text-red-700 border border-red-100 px-3 py-1 rounded-full">
+              Majority: {selectedGroup.majority}
+            </div>
+          )}
         </div>
 
         <div className="hidden md:block">
@@ -389,7 +603,7 @@ const App = () => {
               const events = selectedGroup 
                 ? (MOCK_TIMETABLES[selectedGroup.id] || []) 
                 : selectedLecturer 
-                ? (Object.values(MOCK_TIMETABLES).flat().filter(e => e.lecturer.includes(selectedLecturer.id.charAt(0))))
+                ? (Object.values(MOCK_TIMETABLES).flat().filter(e => e.lecturer === selectedLecturer.name))
                 : selectedRoom
                 ? (Object.values(MOCK_TIMETABLES).flat().filter(e => e.room === selectedRoom.id))
                 : [];
@@ -440,7 +654,7 @@ const App = () => {
             const events = selectedGroup 
               ? (MOCK_TIMETABLES[selectedGroup.id] || []) 
               : selectedLecturer 
-              ? (Object.values(MOCK_TIMETABLES).flat().filter(e => e.lecturer.includes(selectedLecturer.id.charAt(0))))
+              ? (Object.values(MOCK_TIMETABLES).flat().filter(e => e.lecturer === selectedLecturer.name))
               : selectedRoom
               ? (Object.values(MOCK_TIMETABLES).flat().filter(e => e.room === selectedRoom.id))
               : [];
@@ -496,7 +710,7 @@ const App = () => {
             {/* Desktop Nav */}
             <div className="hidden md:flex items-center gap-6">
               <button onClick={goHome} className={`text-sm font-medium transition-colors ${view === 'HOME' ? 'text-red-700' : 'text-slate-600 hover:text-red-700'}`}>Home</button>
-              <button onClick={handleInstructions} className="text-sm font-medium text-slate-600 hover:text-red-700 transition-colors">Instructions</button>
+              <button onClick={goToGuide} className={`text-sm font-medium transition-colors ${view === 'GUIDE' ? 'text-red-700' : 'text-slate-600 hover:text-red-700'}`}>Instructions</button>
               <div className="h-4 w-px bg-slate-200 mx-2" />
               <button onClick={toggleLanguage} className="flex items-center gap-1 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                 <Globe className="w-4 h-4" />
@@ -512,6 +726,18 @@ const App = () => {
               {isMenuOpen ? <X /> : <Menu />}
             </button>
           </div>
+
+          {isMenuOpen && (
+            <div className="md:hidden border-t border-slate-200 py-3 space-y-2">
+              <button onClick={goHome} className="block w-full text-left px-2 py-2 text-sm font-medium text-slate-700 hover:text-red-700">Home</button>
+              <button onClick={goToGuide} className="block w-full text-left px-2 py-2 text-sm font-medium text-slate-700 hover:text-red-700">Instructions</button>
+              <button onClick={toggleLanguage} className="flex items-center gap-2 w-full text-left px-2 py-2 text-sm font-medium text-slate-700 hover:text-red-700">
+                <Globe className="w-4 h-4" />
+                Language: {language}
+              </button>
+              <button onClick={() => showNotification("User profile coming soon!")} className="block w-full text-left px-2 py-2 text-sm font-medium text-slate-700 hover:text-red-700">Profile</button>
+            </div>
+          )}
         </div>
       </nav>
 
@@ -522,6 +748,7 @@ const App = () => {
           {/* Main Dynamically Rendered Content Area */}
           <div className="lg:col-span-8">
             {view === 'HOME' && renderHomeContent()}
+            {view === 'GUIDE' && renderGuideContent()}
             {view === 'BROWSE' && renderBrowseContent()}
             {view === 'TIMETABLE' && renderTimetableContent()}
           </div>
@@ -552,7 +779,7 @@ const App = () => {
               </div>
 
               <div className="grid grid-cols-7 gap-1 text-center text-xs font-semibold uppercase tracking-wider mb-3">
-                {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((d, i) => <div key={i} className="text-slate-400">{d}</div>)}
+                {['E', 'T', 'K', 'N', 'R', 'L', 'P'].map((d, i) => <div key={i} className="text-slate-400">{d}</div>)}
               </div>
 
               <div className="grid grid-cols-7 gap-1 text-center">
@@ -625,7 +852,7 @@ const App = () => {
               <div className="relative z-10">
                 <h3 className="font-bold mb-2 text-lg">Help Center</h3>
                 <p className="text-slate-400 text-sm mb-4 leading-relaxed">Need help navigating the new ASIO redesign system? Check the video tutorials.</p>
-                <button onClick={handleInstructions} className="inline-flex items-center bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg text-white font-semibold text-sm transition-colors">
+                <button onClick={goToGuide} className="inline-flex items-center bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg text-white font-semibold text-sm transition-colors">
                   View Instructions
                   <ChevronRight className="w-4 h-4 ml-1 opacity-70" />
                 </button>
@@ -669,7 +896,7 @@ const App = () => {
       {/* --- Notification Toast --- */}
       {notification && (
         <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-xl shadow-2xl z-[100] animate-in fade-in slide-in-from-bottom-4 duration-300 flex items-center gap-3 border border-slate-700">
-          <AlertCircle className="w-5 h-5 text-red-500" />
+          <Info className="w-5 h-5 text-blue-400" />
           <span className="font-medium">{notification}</span>
         </div>
       )}
@@ -677,4 +904,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default App;
