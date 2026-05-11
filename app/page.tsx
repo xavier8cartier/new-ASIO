@@ -19,6 +19,60 @@ import {
   Calendar,
 } from "lucide-react"
 
+type Group = {
+  id: string
+  name: string
+  instId: string
+  majority?: string
+}
+
+type Lecturer = {
+  id: string
+  name: string
+  instId: string
+}
+
+type Room = {
+  id: string
+  name: string
+  building: string
+}
+
+type TimetableEvent = {
+  id: number
+  day: string
+  start: string
+  end: string
+  title: string
+  type: string
+  room: string
+  lecturer: string
+  color: string
+}
+
+type SearchResult =
+  | {
+      id: string
+      type: "Group"
+      label: string
+      subtitle: string
+      value: Group
+    }
+  | {
+      id: string
+      type: "Lecturer"
+      label: string
+      subtitle: string
+      value: Lecturer
+    }
+  | {
+      id: string
+      type: "Room"
+      label: string
+      subtitle: string
+      value: Room
+    }
+
 // --- MOCK DATA ---
 const MOCK_INSTITUTES = [
   { id: "SDT", name: "School of Digital Technologies" },
@@ -47,7 +101,7 @@ const MOCK_GROUPS = [
   { id: "KOAB-1", name: "Ajakirjandus 1.õ.-a.", instId: "BFM" }, // Added
 ]
 
-const MOCK_TIMETABLES: Record<string, any[]> = {
+const MOCK_TIMETABLES: Record<string, TimetableEvent[]> = {
   "IFIFB-2": [
     {
       id: 1,
@@ -374,9 +428,11 @@ const App = () => {
   const [view, setView] = useState<ViewMode>("HOME")
   const [browseCategory, setBrowseCategory] = useState<string | null>(null)
   const [selectedInstitute, setSelectedInstitute] = useState<string>("SDT")
-  const [selectedGroup, setSelectedGroup] = useState<any>(null)
-  const [selectedLecturer, setSelectedLecturer] = useState<any>(null)
-  const [selectedRoom, setSelectedRoom] = useState<any>(null)
+  const [selectedGroup, setSelectedGroup] = useState<Group | null>(null)
+  const [selectedLecturer, setSelectedLecturer] = useState<Lecturer | null>(
+    null
+  )
+  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null)
   const [searchQuery, setSearchQuery] = useState("")
   const [language, setLanguage] = useState<"EST" | "ENG">("EST")
   const [notification, setNotification] = useState<string | null>(null)
@@ -387,15 +443,52 @@ const App = () => {
   }
 
   const normalizedSearchQuery = searchQuery.trim().toLowerCase()
-  const searchMatches =
+  const searchResults: SearchResult[] =
     normalizedSearchQuery.length > 0
-      ? MOCK_GROUPS.filter(
-          (g) =>
-            g.id.toLowerCase().includes(normalizedSearchQuery) ||
-            g.name.toLowerCase().includes(normalizedSearchQuery) ||
-            g.instId.toLowerCase().includes(normalizedSearchQuery)
-        )
-      : MOCK_GROUPS.slice(0, 5)
+      ? [
+          ...MOCK_GROUPS.filter(
+            (g) =>
+              g.id.toLowerCase().includes(normalizedSearchQuery) ||
+              g.name.toLowerCase().includes(normalizedSearchQuery) ||
+              g.instId.toLowerCase().includes(normalizedSearchQuery)
+          ).map((g) => ({
+            id: g.id,
+            type: "Group" as const,
+            label: g.name,
+            subtitle: `Group ${g.id}`,
+            value: g,
+          })),
+          ...MOCK_LECTURERS.filter(
+            (l) =>
+              l.id.toLowerCase().includes(normalizedSearchQuery) ||
+              l.name.toLowerCase().includes(normalizedSearchQuery) ||
+              l.instId.toLowerCase().includes(normalizedSearchQuery)
+          ).map((l) => ({
+            id: l.id,
+            type: "Lecturer" as const,
+            label: l.name,
+            subtitle: `Lecturer ${l.id}`,
+            value: l,
+          })),
+          ...MOCK_ROOMS.filter(
+            (r) =>
+              r.id.toLowerCase().includes(normalizedSearchQuery) ||
+              r.name.toLowerCase().includes(normalizedSearchQuery)
+          ).map((r) => ({
+            id: r.id,
+            type: "Room" as const,
+            label: r.name,
+            subtitle: `Room ${r.id}`,
+            value: r,
+          })),
+        ]
+      : MOCK_GROUPS.slice(0, 5).map((g) => ({
+          id: g.id,
+          type: "Group" as const,
+          label: g.name,
+          subtitle: `Group ${g.id}`,
+          value: g,
+        }))
 
   const categories = [
     {
@@ -439,37 +532,83 @@ const App = () => {
     setView("BROWSE")
   }
 
-  const goToTimetable = (group: any) => {
+  const goToTimetable = (group: Group) => {
     setSelectedGroup(group)
     setSelectedLecturer(null)
     setSelectedRoom(null)
     setView("TIMETABLE")
   }
 
-  const goToLecturerSchedule = (lecturer: any) => {
+  const goToLecturerSchedule = (lecturer: Lecturer) => {
     setSelectedLecturer(lecturer)
     setSelectedGroup(null)
     setSelectedRoom(null)
     setView("TIMETABLE")
   }
 
-  const goToRoomAvailability = (room: any) => {
+  const goToRoomAvailability = (room: Room) => {
     setSelectedRoom(room)
     setSelectedGroup(null)
     setSelectedLecturer(null)
     setView("TIMETABLE")
   }
 
+  const goToGuide = () => {
+    handleInstructions()
+  }
+
+  const executeSearchResult = (result: SearchResult) => {
+    setSearchQuery(result.label)
+    switch (result.type) {
+      case "Group":
+        goToTimetable(result.value as Group)
+        break
+      case "Lecturer":
+        goToLecturerSchedule(result.value as Lecturer)
+        break
+      case "Room":
+        goToRoomAvailability(result.value as Room)
+        break
+    }
+    setIsMenuOpen(false)
+  }
+
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    const normalizedValue = searchQuery.trim().toLowerCase()
+    if (normalizedValue.length === 0) {
+      return
+    }
+
     const foundGroup = MOCK_GROUPS.find(
-      (g) => g.id.toLowerCase() === searchQuery.trim().toLowerCase()
+      (g) => g.id.toLowerCase() === normalizedValue
     )
     if (foundGroup) {
       goToTimetable(foundGroup)
-    } else if (searchQuery.trim().length > 0) {
-      showNotification(`No group found for "${searchQuery}"`)
+      return
     }
+
+    const foundLecturer = MOCK_LECTURERS.find(
+      (l) =>
+        l.id.toLowerCase() === normalizedValue ||
+        l.name.toLowerCase().includes(normalizedValue)
+    )
+    if (foundLecturer) {
+      goToLecturerSchedule(foundLecturer)
+      return
+    }
+
+    const foundRoom = MOCK_ROOMS.find(
+      (r) =>
+        r.id.toLowerCase() === normalizedValue ||
+        r.name.toLowerCase().includes(normalizedValue)
+    )
+    if (foundRoom) {
+      goToRoomAvailability(foundRoom)
+      return
+    }
+
+    showNotification(`No result found for "${searchQuery}"`)
   }
 
   const handleQuickSearchClick = (groupId: string) => {
@@ -588,7 +727,7 @@ const App = () => {
                 Suggested programs
               </p>
               <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-                {searchMatches.map((group) => (
+                {MOCK_GROUPS.slice(0, 6).map((group) => (
                   <button
                     key={group.id}
                     onClick={() => handleQuickSearchClick(group.id)}
@@ -670,7 +809,7 @@ const App = () => {
             </div>
           </div>
 
-          <div className="grid min-h-[400px] grid-cols-1 md:grid-cols-12">
+          <div className="grid min-h-100 grid-cols-1 md:grid-cols-12">
             {/* Left Pane: Categories/Institutes */}
             <div className="border-r border-slate-100 bg-white md:col-span-4">
               <h3 className="px-6 pt-6 pb-2 text-xs font-bold tracking-wider text-slate-400 uppercase">
@@ -807,7 +946,7 @@ const App = () => {
                 Timetable:{" "}
                 <span className="text-red-700">{selectedGroup.id}</span>
                 <span className="ml-3 rounded-full bg-slate-100 px-2 py-1 text-xs tracking-[0.25em] text-slate-600 uppercase">
-                  {selectedGroup.direction}
+                  {selectedGroup.name}
                 </span>
               </>
             ) : selectedLecturer ? (
@@ -857,9 +996,9 @@ const App = () => {
                         .flat()
                         .filter((e) => e.room === selectedRoom.id)
                     : []
-              const dayEvents = events.filter((e: any) => e.day === day.id)
+              const dayEvents = events.filter((e) => e.day === day.id)
               return (
-                <div key={day.id} className="flex min-h-[600px] flex-col">
+                <div key={day.id} className="flex min-h-150 flex-col">
                   {/* Day Header */}
                   <div className="rounded-t-xl border border-b-0 border-slate-200 bg-slate-100 p-3 text-center">
                     <div className="font-bold text-slate-900">{day.name}</div>
@@ -872,7 +1011,7 @@ const App = () => {
                         No classes
                       </div>
                     ) : (
-                      dayEvents.map((event: any) => (
+                      dayEvents.map((event) => (
                         <div
                           key={event.id}
                           className={`flex flex-col justify-between rounded-lg p-3 shadow-sm ${event.color} overflow-hidden transition-transform hover:-translate-y-0.5`}
@@ -928,7 +1067,7 @@ const App = () => {
                       .flat()
                       .filter((e) => e.room === selectedRoom.id)
                   : []
-            const dayEvents = events.filter((e: any) => e.day === day.id)
+            const dayEvents = events.filter((e) => e.day === day.id)
             if (dayEvents.length === 0) return null
             return (
               <div key={day.id}>
@@ -939,7 +1078,7 @@ const App = () => {
                   </span>
                 </h3>
                 <div className="space-y-3">
-                  {dayEvents.map((event: any) => (
+                  {dayEvents.map((event) => (
                     <div
                       key={event.id}
                       className={`rounded-xl border p-4 shadow-sm ${event.color} overflow-hidden`}
@@ -1368,7 +1507,7 @@ const App = () => {
       </footer>
       {/* --- Notification Toast --- */}
       {notification && (
-        <div className="fixed bottom-8 left-1/2 z-[100] flex -translate-x-1/2 animate-in items-center gap-3 rounded-xl border border-slate-700 bg-slate-900 px-6 py-3 text-white shadow-2xl duration-300 fade-in slide-in-from-bottom-4">
+        <div className="fixed bottom-8 left-1/2 z-100 flex -translate-x-1/2 animate-in items-center gap-3 rounded-xl border border-slate-700 bg-slate-900 px-6 py-3 text-white shadow-2xl duration-300 fade-in slide-in-from-bottom-4">
           <AlertCircle className="h-5 w-5 text-red-500" />
           <span className="font-medium">{notification}</span>
         </div>
